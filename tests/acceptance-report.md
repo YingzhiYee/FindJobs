@@ -1,4 +1,4 @@
-# Acceptance report - 2026-07-27
+# Acceptance report - 2026-07-28
 
 ## Authoritative release status
 
@@ -24,7 +24,7 @@ realDiscoverScopes:
     evidence: exact-query-zero-result
 controlledFixtureFillEnabled: true
 controlledFixtureSubmitEnabled: true
-controlledFixtureRecordingReady: false
+controlledFixtureRecordingReady: true
 realFillEnabled: false
 realSubmitEnabled: false
 gates:
@@ -50,7 +50,7 @@ The highest real-site mode is `Draft`, and only after a posting is found inside 
 - The PDF/DOCX resume-to-profile-to-match-to-material path passed deterministic build, parse/readback, render, contact-isolation, truthfulness and layout gates. See `golden-resume-report.md`.
 - ByteDance daily-internship discovery passed a native list plus visible official detail check for posting `A106199`. Tencent campus-full-time exact-query semantics passed with a verified zero-result response. These are narrow adapter scopes, not whole-site approval.
 - Hostile JD text, HTTP 429, cross-domain redirect, recruitment-semantic mismatch and conservative deduplication all failed safely.
-- An earlier controlled `Fill -> Submit -> ledger -> restart/replay` path passed 16 dynamic single-writer checks and wrote 19 fsynced, hash-chained events. The current generation/HMAC/retry harness has passed static checks but not its dynamic rerun, so `controlledFixtureRecordingReady` remains false. Operating-system exclusive-lock contention between concurrent writers has not been dynamically exercised, so G6 remains partial. See `golden-submit-report.md`.
+- The current controlled `Fill -> Submit -> ledger -> restart/replay` harness passed dynamically against the fixed loopback fixture. It wrote and replayed 23 fsynced, hash-chained events, maintained two owner-only HMAC sidecars, recovered a byte-preserved partial tail into a new generation, rejected attempt replay, and completed a fresh-confirmation retry cycle without a second browser click. This enables fake-data recording, so `controlledFixtureRecordingReady` is true. Operating-system exclusive-lock contention between concurrent writers has not been dynamically exercised, so G6 remains partial. See `golden-submit-report.md`.
 - Static Murphy validation covers 30 failure cases across supply chain, prompt injection, privacy, browser controls, search semantics, autosave disclosure, duplicates and crash/replay recovery.
 
 ## Explicitly disabled
@@ -77,7 +77,7 @@ The highest real-site mode is `Draft`, and only after a posting is found inside 
 
 ### G4 and partial controlled G6 - form and persistence
 
-`tests/golden-submit-report.md` records zero mutation before authorization, exact disclosure and submit phrases, approved-field-only filling, attachment readback, write-ahead `submit_started`, one semantic click, receipt verification, replay rejection, mutation/cross-origin/CAPTCHA stops, sensitive-field handoff, ambiguous-result handling and restart recovery. This evidence enables only the repository's controlled fixture. It does not yet prove that the exclusive operating-system lock rejects a competing writer.
+`tests/golden-submit-report.md` records zero mutation before authorization, exact disclosure and submit phrases, approved-field-only filling, attachment readback, write-ahead `submit_started`, one semantic click, receipt verification, replay rejection, mutation/cross-origin/CAPTCHA stops, sensitive-field handoff, ambiguous-result handling, restart recovery, HMAC sidecars, generation switching and a no-click retry cycle. This evidence enables only the repository's controlled fixture and its clearly labeled recording. It does not prove that the exclusive operating-system lock rejects a competing writer.
 
 ## Still required for real application submission
 

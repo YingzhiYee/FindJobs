@@ -1,8 +1,8 @@
-# Controlled golden Fill/Submit report — 2026-07-27
+# Controlled golden Fill/Submit report — 2026-07-28
 
 ## Result
 
-An earlier synthetic `Fill → Submit → local ledger → restart/replay` slice passed its controlled dynamic gate. The current generation/HMAC/retry harness has not yet completed its reproducible dynamic rerun, so `controlledFixtureRecordingReady` remains false. This is not a real-employer submission gate: `realFillEnabled` and `realSubmitEnabled` remain false.
+The current synthetic `Fill → Submit → local ledger → restart/replay` harness passed its reproducible dynamic gate, including generation recovery, HMAC sidecars and the no-click retry cycle. `controlledFixtureRecordingReady` is now true. This is only a fake-data recording gate: `realFillEnabled` and `realSubmitEnabled` remain false.
 
 A separate read-only Discover run observed ByteDance official posting `A106199`. That evidence proves only real-site discovery. Every fill, upload and click in this report targeted the loopback fixture for fictional company `Fixture Labs`, job `golden-demo-001`; no real employer or ATS form was opened or mutated.
 
@@ -10,21 +10,21 @@ A separate read-only Discover run observed ByteDance official posting `A106199`.
 
 - Reviewed ego(lite): `0.4.6.0`.
 - Reviewed `ego-browser`: skill `1.2.5`, dated `2026-07-16`.
-- Executed skill SHA-256: `3d2d43ba61ace9977827f0343d333c597ac6f3d1a0a207a4a62b16468c3292c7`, the acceptance-tested tuple recorded in `config/skills.lock.yaml` before the latest-stable resolver replaced the manual runtime allowlist.
-- Browser target: `tests/fixtures/application-form.html`, served only on `127.0.0.1:8765` for the run.
+- Executed skill SHA-256: `3d2d43ba61ace9977827f0343d333c597ac6f3d1a0a207a4a62b16468c3292c7`. The latest-stable resolver independently matched it to Citro Labs GitHub Release `v1.2.5`, verified the Release asset SHA-256, and validated the signed/notarized `/Applications` app.
+- Browser target: `tests/fixtures/application-form.html`, served only on `127.0.0.1:18765` for the run.
 - Upload: `tests/fixtures/application-fake-resume.txt`, containing synthetic `example.invalid` data.
-- Final passing ego task space: ID `44`; `taskSpaces.complete(..., { keep: false })` returned done and closed it.
-- Durable test ledger: 19 hash-chained NDJSON events in a private system temporary directory. Every append was followed by file `fsync`, readback and full replay validation before the allowed click.
+- Final passing ego task space for this run: ID `1`; `taskSpaces.complete(..., { keep: false })` returned done and closed it.
+- Durable test ledger: 23 hash-chained NDJSON events in a private system temporary directory. Every append was followed by file `fsync`, readback and full replay validation before the allowed click.
 
-The first harness attempt was rejected by Node's module-format check before task-space selection or page access. A later harness attempt reached only the controlled fixture but had an incorrect assertion about a hidden form; task space `43` was explicitly closed. The corrected full run below is the acceptance evidence.
+The passing result reported `realEmployerTouched: false`, receipt `FIXTURE-001`, submit count `1`, two HMAC sidecars, a replay state of `submitted`, a recovered `generation-000002.ndjson`, and a retry fixture with authoritative `not_submitted`, submit count `0`, no receipt and no second click.
 
 ## Reproducible harness rerun
 
-`./tests/run-golden-submit.sh` now packages the controlled route as a no-argument maintainer command on fixed `127.0.0.1:18765`. Bash syntax, embedded JavaScript syntax, pinned fixture hashes and the scoped diff check passed.
+`./tests/run-golden-submit.sh` packages the controlled route as a no-argument maintainer command on fixed `127.0.0.1:18765`. Bash syntax, embedded JavaScript execution, pinned fixture hashes, latest-stable runtime resolution and the scoped diff check passed from source commit `b134c3d426895e817933ba0b10e01e5b5f2c25c6`.
 
-The 2026-07-27 rerun correctly exited before starting the loopback server because two ego main processes were present: the reviewed `0.4.6.0` app and an older Desktop `0.4.5.5` app. Port `18765` had no listener before or after the command. The harness did not create a browser task space, touch a website or terminate either process.
+The resolver used the fixed `/Applications/AI product Builder/ego.app`, ignored the stale onboarding symlink, downloaded the official stable skill ZIP only for hashing, and executed the CLI directly from the verified app runtime. The harness started the verified app because no ego main process was running. It did not terminate a process or use the Desktop copy.
 
-This is positive fail-closed evidence, not a passing end-to-end rerun. The generation switch, HMAC sidecars, partial-tail recovery and fresh retry-cycle assertions in the new harness have passed static syntax/review only; they were not dynamically executed in this rerun. The task-space `44` evidence below remains the prior controlled browser evidence and must not be represented as if it exercised those newer assertions.
+The loopback server stopped after success, and the task space was closed. No real employer, ATS, posting application URL or real candidate data entered the controlled route.
 
 ## Dynamic Murphy checks
 
@@ -45,13 +45,16 @@ This is positive fail-closed evidence, not a passing end-to-end rerun. The gener
 | Ambiguous submit result | One click produced only `Processing`; ledger recorded `unknown`; the attempt remained consumed and non-retryable. |
 | Crash/restart | Replaying a durable `submit_started` tail appended `unknown` before browser action; submit count remained `0`. |
 | Handoff side effect | An existing fixture receipt with the form hidden was reconciled without a click. |
-| Ledger integrity/privacy | All 19 event sequence/hash links validated; candidate name, email and cover-letter text were absent from the ledger. |
+| Ledger integrity/privacy | All 23 event sequence/hash links validated; candidate name, email and cover-letter text were absent from the ledger. |
+| HMAC sidecars | Two owner-only per-application sidecars existed; raw low-entropy answers were absent from every generation. |
+| Partial-tail recovery | The damaged bytes were preserved in quarantine; a clean generation was written, fsynced and selected through an atomic `CURRENT` switch. |
+| Retry cycle | An authoritative `not_submitted` page justified a fresh attempt ID, fresh bindings and both repeated exact confirmations; the retry page received no browser click. |
 
-All 16 checks returned `true`. The local HTTP service was stopped after the run.
+All original 16 checks and the generation/HMAC/retry assertions returned true. The local HTTP service was stopped after the run.
 
 ## Implemented contract
 
-The one-off task-space run above predates the generation/HMAC hardening below. `skills/find-my-dream-job/references/application-ledger.md` now defines:
+The passing run dynamically exercised the generation/HMAC hardening defined by `skills/find-my-dream-job/references/application-ledger.md`:
 
 - a private, coordinator-owned `CURRENT` generation with retired damaged generations retained unchanged;
 - canonical hashes for application, form, attachments and bindings plus per-application HMAC commitments for answers;
@@ -71,4 +74,4 @@ The one-off task-space run above predates the generation/HMAC hardening below. `
 - CAPTCHA, OTP, login expiry, signatures, consent and sensitive questions require user handoff. The agent must reconcile first when control returns.
 - A generic HTTP success, redirect, toast or click return remains insufficient evidence of submission.
 
-Therefore this report supports a fake-data XHS golden-path recording. Real Fill/Submit require G5 plus matching exact-ATS G4/G6 evidence, including exclusive-lock contention, in a later pinned release. They remain disabled here.
+Therefore this report supports a clearly labeled fake-data XHS golden-path recording and `controlledFixtureRecordingReady: true`. Real Fill/Submit require G5 plus matching exact-ATS G4/G6 evidence, including exclusive-lock contention, in a later pinned release. They remain disabled here.
