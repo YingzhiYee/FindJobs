@@ -1,7 +1,7 @@
 {
   "name": "find-my-dream-job",
-  "version": "0.3.4",
-  "description": "Safe job discovery and truthful application drafting, with test-only consent gates for future ego-browser filling and submission.",
+  "version": "0.4.0-beta.1",
+  "description": "Scoped real job discovery, truthful local application materials, and a controlled consent-gated submission demo with ego(lite).",
   "homepage": "https://github.com/YingzhiYee/FindJobs",
   "repository": "https://github.com/YingzhiYee/FindJobs",
   "license": "MIT",
@@ -16,15 +16,15 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Find My Dream Job",
-    "shortDescription": "A reviewable Codex + ego(lite) job-search workflow.",
-    "longDescription": "Discover jobs, compare evidence, and draft truthful materials. Real form filling and submission remain disabled until the published dynamic acceptance gates pass.",
+    "shortDescription": "A scoped Codex + ego(lite) job-search beta.",
+    "longDescription": "Discover jobs in reviewed real-site scopes, compare evidence, prepare truthful local materials, and rehearse two-confirmation submission on a controlled form. Real employer filling and submission remain disabled.",
     "developerName": "YingzhiYee",
     "category": "Productivity",
     "capabilities": [
       "Job discovery",
       "Resume matching",
       "Application drafting",
-      "Controlled consent-gate testing"
+      "Controlled Fill/Submit demonstration"
     ],
     "defaultPrompt": [
       "Start a safe job search in Discover mode.",

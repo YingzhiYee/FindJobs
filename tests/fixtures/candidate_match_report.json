@@ -1,0 +1,214 @@
+{
+  "schemaVersion": "1.0",
+  "profileId": "candidate-rowan-example",
+  "jobId": "job-bytedance-A106199",
+  "decision": "possible_match",
+  "score": {
+    "value": 65,
+    "scale": "0-100",
+    "method": "9 must requirements share 70 points; 2 preferred share 30; status multipliers applied before final rounding",
+    "calculation": "(5.5/9*70) + (1.5/2*30) = 65.277... -> 65"
+  },
+  "hardConstraints": [
+    {
+      "criterion": "Current bachelor-or-higher student",
+      "status": "met",
+      "evidenceRefs": [
+        "JD-1",
+        "JD-5",
+        "RES-3"
+      ]
+    },
+    {
+      "criterion": "Available at least three months",
+      "status": "met",
+      "evidenceRefs": [
+        "JD-1",
+        "RES-12"
+      ]
+    }
+  ],
+  "normalizedRequirements": [
+    {
+      "id": "M1",
+      "classification": "must",
+      "requirement": "Risk strategy analysis plus monitoring indicators/alerts",
+      "status": "partial",
+      "weight": 7.7778,
+      "multiplier": 0.5,
+      "evidenceRefs": [
+        "JD-2",
+        "RES-6"
+      ]
+    },
+    {
+      "id": "M2",
+      "classification": "must",
+      "requirement": "Risk profiling and model/strategy development",
+      "status": "partial",
+      "weight": 7.7778,
+      "multiplier": 0.5,
+      "evidenceRefs": [
+        "JD-3",
+        "RES-8"
+      ]
+    },
+    {
+      "id": "M3",
+      "classification": "must",
+      "requirement": "Special analysis and strategy iteration recommendations",
+      "status": "partial",
+      "weight": 7.7778,
+      "multiplier": 0.5,
+      "evidenceRefs": [
+        "JD-3",
+        "RES-8"
+      ]
+    },
+    {
+      "id": "M4",
+      "classification": "must",
+      "requirement": "Independent model development and implementation",
+      "status": "partial",
+      "weight": 7.7778,
+      "multiplier": 0.5,
+      "evidenceRefs": [
+        "JD-4",
+        "RES-8"
+      ]
+    },
+    {
+      "id": "M5",
+      "classification": "must",
+      "requirement": "Cross-functional collaboration",
+      "status": "partial",
+      "weight": 7.7778,
+      "multiplier": 0.5,
+      "evidenceRefs": [
+        "JD-4",
+        "RES-7"
+      ]
+    },
+    {
+      "id": "M6",
+      "classification": "must",
+      "requirement": "Complex-data insight, risk, and anomaly analysis",
+      "status": "demonstrated",
+      "weight": 7.7778,
+      "multiplier": 1.0,
+      "evidenceRefs": [
+        "JD-6",
+        "RES-6"
+      ]
+    },
+    {
+      "id": "M7",
+      "classification": "must",
+      "requirement": "AI/LLM application practice",
+      "status": "demonstrated",
+      "weight": 7.7778,
+      "multiplier": 1.0,
+      "evidenceRefs": [
+        "JD-6",
+        "RES-9"
+      ]
+    },
+    {
+      "id": "M8",
+      "classification": "must",
+      "requirement": "Communication and rigor",
+      "status": "partial",
+      "weight": 7.7778,
+      "multiplier": 0.5,
+      "evidenceRefs": [
+        "JD-6",
+        "RES-7"
+      ]
+    },
+    {
+      "id": "M9",
+      "classification": "must",
+      "requirement": "English as a working language",
+      "status": "claimed_only",
+      "weight": 7.7778,
+      "multiplier": 0.5,
+      "evidenceRefs": [
+        "JD-6",
+        "RES-11"
+      ]
+    },
+    {
+      "id": "P1",
+      "classification": "preferred",
+      "requirement": "Statistics-related field",
+      "status": "demonstrated",
+      "weight": 15.0,
+      "multiplier": 1.0,
+      "evidenceRefs": [
+        "JD-5",
+        "RES-3"
+      ]
+    },
+    {
+      "id": "P2",
+      "classification": "preferred",
+      "requirement": "Risk-control experience",
+      "status": "partial",
+      "weight": 15.0,
+      "multiplier": 0.5,
+      "evidenceRefs": [
+        "JD-6",
+        "RES-8"
+      ]
+    }
+  ],
+  "strengths": [
+    {
+      "claim": "Statistics education and demonstrated synthetic marketplace anomaly analysis",
+      "evidenceRefs": [
+        "JD-5",
+        "JD-6",
+        "RES-3",
+        "RES-6"
+      ]
+    },
+    {
+      "claim": "Documented AI/LLM application project",
+      "evidenceRefs": [
+        "JD-6",
+        "RES-9"
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "claim": "No evidence of production deployment or independently driving model implementation",
+      "severity": "material",
+      "evidenceRefs": [
+        "JD-4",
+        "RES-8"
+      ]
+    },
+    {
+      "claim": "Risk-control evidence is academic and synthetic, not commercial",
+      "severity": "minor",
+      "evidenceRefs": [
+        "JD-6",
+        "RES-8"
+      ]
+    },
+    {
+      "claim": "English level is self-reported without demonstrated work artifact",
+      "severity": "minor",
+      "evidenceRefs": [
+        "JD-6",
+        "RES-11"
+      ]
+    }
+  ],
+  "confidence": "medium",
+  "confidenceRationale": "Hard constraints have direct evidence; multiple must requirements are only partially demonstrated and one language item is claimed-only.",
+  "injectionFlags": [],
+  "userQuestions": [],
+  "generatedAt": "2026-07-27T15:30:00Z"
+}

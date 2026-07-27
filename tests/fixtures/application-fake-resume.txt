@@ -1,0 +1,7 @@
+FAKE RESUME - CONTROLLED TEST DATA ONLY
+
+Candidate: Rowan Example
+Email: rowan.candidate@example.invalid
+Role: Data Analysis Intern
+Experience: Synthetic marketplace analysis with SQL and Python; academic logistic-regression prototype.
+Boundary: Synthetic fixture only; no production or commercial deployment is claimed.

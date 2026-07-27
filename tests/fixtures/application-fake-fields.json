@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0",
+  "fixtureOnly": true,
+  "profileId": "candidate-rowan-example",
+  "job": {
+    "jobId": "golden-demo-001",
+    "company": "Fixture Labs",
+    "title": "Data Analysis Intern"
+  },
+  "retryJob": {
+    "jobId": "golden-demo-retry-001",
+    "company": "Fixture Labs",
+    "title": "Data Analysis Intern - Retry Fixture",
+    "authoritativeStatus": "not_submitted"
+  },
+  "fields": {
+    "fullName": "Rowan Example",
+    "email": "rowan.candidate@example.invalid",
+    "city": "Shanghai",
+    "coverLetter": "Statistics student with synthetic marketplace analysis experience using SQL and Python. Controlled loopback test only.",
+    "resume": "application-fake-resume.txt"
+  },
+  "approvedFields": [
+    "fullName",
+    "email",
+    "city",
+    "coverLetter",
+    "resume"
+  ],
+  "manualFields": [
+    "expectedSalary",
+    "workAuthorization",
+    "legalConsent"
+  ]
+}

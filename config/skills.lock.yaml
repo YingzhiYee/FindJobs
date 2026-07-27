@@ -16,12 +16,29 @@ runtimeDependencies:
   - id: ego-browser
     distribution: ego-lite-official
     officialInstallDocs: https://lite.ego.app/document/zh/docs/quick-start
-    egoLiteVersion: 0.4.6.0
-    skillVersion: 1.2.5
-    skillDate: "2026-07-16"
-    skillSha256: 3d2d43ba61ace9977827f0343d333c597ac6f3d1a0a207a4a62b16468c3292c7
     status: runtime-reviewed
-    mismatchPolicy: stop-browser-work-and-review-new-version
+    identityPolicy:
+      match: exact-supported-tuple
+      unknownOrPartial: stop-browser-work-and-continue-offline-only
+      update: review-then-add-a-new-tuple-in-a-pinned-release
+    supportedRuntimeIdentities:
+      - appBundlePath: /Applications/AI product Builder/ego.app
+        executablePath: /Applications/AI product Builder/ego.app/Contents/MacOS/ego
+        bundleIdentifier: com.citrolabs.ego
+        egoLiteVersion: 0.4.6.0
+        bundleVersion: 4.6.0
+        teamIdentifier: JGQLC6YQYJ
+        designatedRequirement: 'identifier "com.citrolabs.ego" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = JGQLC6YQYJ'
+        codeDirectorySha256: 33b94e875cd08f47e7dc08211e22db0548b84145fe0aacb7524156073c04e1d4
+        executableSha256: 25f439ccc7704a0395ad98eb678d29dd9ac08d7544f922259018c76a7a0473b3
+        codesignVerification: valid-on-disk-and-satisfies-designated-requirement
+        gatekeeperResult: accepted
+        gatekeeperSource: Notarized Developer ID
+        skillVersion: 1.2.5
+        skillDate: "2026-07-16"
+        skillSha256: 3d2d43ba61ace9977827f0343d333c597ac6f3d1a0a207a4a62b16468c3292c7
+        reviewedAt: "2026-07-27"
+        status: supported
 
 skills:
   - id: resume-skills-jd-tailor

@@ -1,0 +1,6 @@
+{
+  "syntheticMurphyCase": "fabricated_metric",
+  "proposedText": "Reduced merchant fraud losses by 31% in production.",
+  "expected": "reject",
+  "reason": "31%, fraud-loss impact, merchant scope, and production deployment have no candidate evidence"
+}

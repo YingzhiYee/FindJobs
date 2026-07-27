@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "1.0",
+  "draftId": "draft-bytedance-A106199-rowan-example",
+  "jobId": "job-bytedance-A106199",
+  "profileId": "candidate-rowan-example",
+  "resumeVersion": "resume-fbf2e1b8d8c4b8cf929d1ec6cfbe169f63cb85b113a49d68ac3dcf2b26b40135",
+  "files": [
+    {
+      "path": "tests/fixtures/resume_candidate_tailored.docx",
+      "kind": "resume",
+      "sha256": "fbf2e1b8d8c4b8cf929d1ec6cfbe169f63cb85b113a49d68ac3dcf2b26b40135"
+    }
+  ],
+  "answers": [],
+  "changes": [
+    {
+      "before": "Statistics undergraduate with academic data-analysis and local LLM evaluation project experience.",
+      "after": "Statistics undergraduate with academic experience analyzing synthetic marketplace risk signals and building local LLM evaluation prototypes. Uses SQL and Python to investigate anomalies and communicate findings.",
+      "evidenceRefs": [
+        "RES-3",
+        "RES-6",
+        "RES-7",
+        "RES-9"
+      ]
+    },
+    {
+      "before": "Analyzed 40,000 synthetic marketplace order records with SQL and Python to identify anomalous refund patterns.",
+      "after": "Used SQL and Python to analyze 40,000 synthetic marketplace orders and identify anomalous refund patterns.",
+      "evidenceRefs": [
+        "RES-6"
+      ]
+    },
+    {
+      "before": "Built a logistic-regression prototype for a risk-screening exercise and documented false-positive tradeoffs.",
+      "after": "Built a logistic-regression risk-screening prototype and documented false-positive tradeoffs; no production deployment is claimed.",
+      "evidenceRefs": [
+        "RES-8"
+      ]
+    },
+    {
+      "before": "May 2025 - August/September 2025 conflict",
+      "after": "May 2025 - August 2025",
+      "evidenceRefs": [
+        "RES-4",
+        "RES-5",
+        "USER-A1"
+      ]
+    }
+  ],
+  "riskFlags": [
+    "Commercial risk-control experience is not claimed",
+    "Production model deployment is not claimed"
+  ],
+  "missingRequiredFields": [
+    "work authorization",
+    "salary expectation"
+  ],
+  "readyForReview": false,
+  "claimLedger": [
+    {
+      "claimId": "CL-1",
+      "exactFact": "40,000 synthetic marketplace orders analyzed with SQL and Python for anomalous refund patterns",
+      "allowedTransformations": [
+        "shorten",
+        "active voice",
+        "reorder"
+      ],
+      "candidateEvidence": [
+        "RES-6"
+      ],
+      "risk": "Must remain synthetic"
+    },
+    {
+      "claimId": "CL-2",
+      "exactFact": "Academic logistic-regression risk-screening prototype; false-positive tradeoffs documented",
+      "allowedTransformations": [
+        "shorten",
+        "reorder"
+      ],
+      "candidateEvidence": [
+        "RES-8"
+      ],
+      "risk": "No production deployment"
+    },
+    {
+      "claimId": "CL-3",
+      "exactFact": "Local LLM retrieval/evaluation prototype on synthetic questions",
+      "allowedTransformations": [
+        "shorten",
+        "reorder"
+      ],
+      "candidateEvidence": [
+        "RES-9"
+      ],
+      "risk": "No commercial deployment"
+    }
+  ],
+  "qa": {
+    "sourceSha256": "ffdf32cc1f63a91d93fb7cfcf6b3cce20277003da5f024c0f68e94035912ce14",
+    "outputSha256": "fbf2e1b8d8c4b8cf929d1ec6cfbe169f63cb85b113a49d68ac3dcf2b26b40135",
+    "readbackPassed": true,
+    "criticalValuesPassed": true,
+    "contactIsolationPassed": true,
+    "claimReconciliationPassed": true,
+    "renderedPages": [
+      "page-1"
+    ],
+    "layoutPassed": true,
+    "issues": []
+  }
+}

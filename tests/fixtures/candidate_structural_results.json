@@ -1,0 +1,15 @@
+{
+  "source_sha256": "ffdf32cc1f63a91d93fb7cfcf6b3cce20277003da5f024c0f68e94035912ce14",
+  "tailored_sha256": "fbf2e1b8d8c4b8cf929d1ec6cfbe169f63cb85b113a49d68ac3dcf2b26b40135",
+  "source_readback_contains_metric": true,
+  "source_readback_contains_conflicting_dates": true,
+  "tailored_contact_exact": true,
+  "wrong_contact_fixture_rejected": true,
+  "source_pdf_text_layer_readback": true,
+  "tailored_pdf_text_layer_readback": true,
+  "tailored_pdf_contact_exact": true,
+  "two_column_detected": true,
+  "scanned_pdf_has_no_text_layer": true,
+  "fabricated_metric_absent_from_tailored": true,
+  "all_structural_checks_passed": true
+}

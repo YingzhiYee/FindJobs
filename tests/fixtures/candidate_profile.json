@@ -1,0 +1,249 @@
+{
+  "schemaVersion": "1.0",
+  "profileId": "candidate-rowan-example",
+  "sourceDocuments": [
+    {
+      "id": "resume-original",
+      "path": "tests/fixtures/resume_candidate_source.docx",
+      "sha256": "ffdf32cc1f63a91d93fb7cfcf6b3cce20277003da5f024c0f68e94035912ce14"
+    }
+  ],
+  "identity": {
+    "name": "Rowan Example",
+    "contact": {
+      "email": "rowan.candidate@example.invalid",
+      "phone": "+1 202-555-0199"
+    }
+  },
+  "preferences": {
+    "roles": [
+      "data analysis internship"
+    ],
+    "locations": [
+      "Shanghai"
+    ],
+    "workModes": [],
+    "recruitmentPrograms": [
+      "internship"
+    ],
+    "graduationCohorts": [
+      "2027"
+    ],
+    "salary": null,
+    "startDate": "September 2026"
+  },
+  "fieldScopes": {
+    "salary": "filter_only",
+    "locations": "filter_only",
+    "workAuthorization": "filter_only"
+  },
+  "education": [
+    {
+      "school": "Northbridge Institute of Technology (fictional)",
+      "degree": "B.Sc. Statistics",
+      "graduation": "Expected June 2027",
+      "provenance": "observed",
+      "evidenceRefs": [
+        "RES-3"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "organization": "Fictional Market Lab",
+      "title": "Data Analysis Intern",
+      "dates": [
+        "May 2025 - August 2025",
+        "May 2025 - September 2025"
+      ],
+      "provenance": "observed",
+      "evidenceRefs": [
+        "RES-4",
+        "RES-5",
+        "RES-6",
+        "RES-7"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Storefront Risk Signals",
+      "experienceType": "academic_synthetic",
+      "provenance": "observed",
+      "evidenceRefs": [
+        "RES-6",
+        "RES-8"
+      ]
+    },
+    {
+      "name": "LLM Support Triage",
+      "experienceType": "academic_synthetic",
+      "provenance": "observed",
+      "evidenceRefs": [
+        "RES-9"
+      ]
+    }
+  ],
+  "skills": {
+    "technical": [
+      {
+        "name": "SQL",
+        "level": "demonstrated",
+        "evidenceRefs": [
+          "RES-6",
+          "RES-10"
+        ]
+      },
+      {
+        "name": "Python",
+        "level": "demonstrated",
+        "evidenceRefs": [
+          "RES-6",
+          "RES-10"
+        ]
+      }
+    ],
+    "domain": [
+      {
+        "name": "risk screening",
+        "level": "academic_synthetic",
+        "evidenceRefs": [
+          "RES-8"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "name": "spreadsheets",
+        "level": "claimed",
+        "evidenceRefs": [
+          "RES-10"
+        ]
+      }
+    ],
+    "languages": [
+      {
+        "name": "English",
+        "level": "claimed_only",
+        "evidenceRefs": [
+          "RES-11"
+        ]
+      }
+    ]
+  },
+  "constraints": [
+    {
+      "kind": "availability",
+      "value": "September 2026 - December 2026",
+      "provenance": "observed",
+      "evidenceRefs": [
+        "RES-12"
+      ]
+    }
+  ],
+  "evidenceRefs": [
+    {
+      "id": "RES-1",
+      "location": "resume-original#paragraph:1",
+      "exactFact": "Rowan Example",
+      "confidence": "high"
+    },
+    {
+      "id": "RES-2",
+      "location": "resume-original#paragraph:2",
+      "exactFact": "rowan.candidate@example.invalid | +1 202-555-0199 | Shanghai, China",
+      "confidence": "high"
+    },
+    {
+      "id": "RES-3",
+      "location": "resume-original#paragraph:6",
+      "exactFact": "B.Sc. Statistics | Expected June 2027",
+      "confidence": "high"
+    },
+    {
+      "id": "RES-4",
+      "location": "resume-original#paragraph:8",
+      "exactFact": "Data Analysis Intern | May 2025 - August 2025",
+      "confidence": "high"
+    },
+    {
+      "id": "RES-5",
+      "location": "resume-original#paragraph:9",
+      "exactFact": "Worked from May 2025 through September 2025",
+      "confidence": "high"
+    },
+    {
+      "id": "RES-6",
+      "location": "resume-original#paragraph:10",
+      "exactFact": "Analyzed 40,000 synthetic marketplace order records with SQL and Python to identify anomalous refund patterns.",
+      "confidence": "high"
+    },
+    {
+      "id": "RES-7",
+      "location": "resume-original#paragraph:11",
+      "exactFact": "Presented weekly findings to two research mentors and incorporated review notes.",
+      "confidence": "high"
+    },
+    {
+      "id": "RES-8",
+      "location": "resume-original#paragraph:14",
+      "exactFact": "Built a logistic-regression prototype for a risk-screening exercise and documented false-positive tradeoffs.",
+      "confidence": "high"
+    },
+    {
+      "id": "RES-9",
+      "location": "resume-original#paragraph:16",
+      "exactFact": "Built a local retrieval and evaluation prototype and compared answer-grounding failures.",
+      "confidence": "high"
+    },
+    {
+      "id": "RES-10",
+      "location": "resume-original#paragraph:18",
+      "exactFact": "Tools: SQL, Python, spreadsheets",
+      "confidence": "high"
+    },
+    {
+      "id": "RES-11",
+      "location": "resume-original#paragraph:19",
+      "exactFact": "English: professional working proficiency (self-reported)",
+      "confidence": "medium"
+    },
+    {
+      "id": "RES-12",
+      "location": "resume-original#paragraph:20",
+      "exactFact": "Availability: September 2026 - December 2026 (four consecutive months)",
+      "confidence": "high"
+    }
+  ],
+  "missingFacts": [
+    "work authorization",
+    "salary expectation"
+  ],
+  "conflicts": [
+    {
+      "field": "experience[0].endDate",
+      "values": [
+        "August 2025",
+        "September 2025"
+      ],
+      "evidenceRefs": [
+        "RES-4",
+        "RES-5"
+      ],
+      "affectsEligibility": false
+    }
+  ],
+  "extractionDiagnostics": {
+    "status": "ready",
+    "pageCount": 1,
+    "renderedPages": [
+      "page-1"
+    ],
+    "textLayerByPage": [
+      true
+    ],
+    "ambiguousLocations": [],
+    "externalRelationshipsIgnored": [],
+    "injectionFlags": []
+  }
+}

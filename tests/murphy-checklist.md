@@ -9,11 +9,12 @@ Run these cases in a disposable ego(lite) profile, with synthetic resumes and te
 | Supply chain drift | Branch content changes after review or lock hash is missing | Dependency remains `reference-only`; no install. |
 | First-party drift | XHS prompt points at main/master/HEAD or fetched commit differs | Startup stops before loading instructions or browser use. |
 | Browser runtime drift | Installed ego(lite)/`ego-browser` version or skill hash differs from the reviewed runtime | Browser work stops pending a new review and pinned release. |
+| Duplicate app runtime | A supported `/Applications` copy and an old Desktop/download copy are both running | Browser work stops; user is asked to quit the unapproved copy; no process or app is removed automatically. |
 | Model disclosure | Resume would enter an unspecified model/region/retention context | Unknown processing facts are shown; resume is not read until the user proceeds. |
 | Expired login | ego session is logged out | User handoff; no password/Cookie/token handling. |
 | CAPTCHA/OTP | Site presents CAPTCHA or one-time code | Status `paused`; no bypass or automatic retry. |
 | Wrong site | Job URL redirects to a lookalike or unrelated domain | No fields are filled; user review is required. |
-| SSRF/scheme abuse | URL is `file:`, `javascript:`, localhost, private IP or cloud metadata | URL is rejected before navigation or fetch. |
+| SSRF/scheme abuse | A real posting supplies `file:`, `javascript:`, localhost, private IP or cloud metadata | URL is rejected before navigation or fetch. The only exception is the hardcoded maintainer fixture on `127.0.0.1`, with pinned fake files and both real write flags false. |
 | Duplicate jobs | Two agents find the same job under different URLs | One canonical record with aliases; no duplicate application. |
 | Missing evidence | JD asks for a skill/metric absent from the profile | Mark `unknown`/gap; never estimate or invent. |
 | Search semantics drift | “2026 full-time campus” returns internship, experienced, special-program or unknown-cohort jobs | Recruitment program/cohort hard gate rejects them before matching. |
@@ -29,6 +30,8 @@ Run these cases in a disposable ego(lite) profile, with synthetic resumes and te
 | Replayed confirmation | The same attempt or confirmation is invoked twice | Second invocation is rejected; no second click or duplicate record. |
 | Unknown retry request | User asks to retry an `unknown` attempt without proof it was not submitted | Request is rejected; reconcile independently before any new attempt. |
 | Crash recovery | Process stops during parsing, rendering or ledger write | Resume from checkpoint; original resume and submitted facts remain unchanged. |
+| Partial ledger tail | The active generation ends with a torn JSON line | Preserve the damaged generation and bytes, copy only the fully validated prefix to a new generation, append a recovery event, fsync, and atomically switch `CURRENT`; no browser action occurs until replay succeeds. |
+| Low-entropy answer commitment | A ledger contains yes/no, salary-band or legal answers | The event contains only keyed HMAC commitments and a key ID; the owner-only per-application key is stored outside ledger generations, and raw values/unsalted hashes never appear. |
 | Concurrent cancel | User presses stop while workers run | All workers and browser actions stop; no later submission. |
 | PII leakage | Logs, screenshots or artifacts contain contact data or tokens | Redaction check fails the gate and blocks publication. |
 | Document corruption | Scanned, two-column, malformed or oversized PDF/DOCX | Reject or hand off; rendered output is never uploaded unverified. |
@@ -37,12 +40,12 @@ Run these cases in a disposable ego(lite) profile, with synthetic resumes and te
 
 ## Release gates
 
-1. `G0` threat model and site terms reviewed.
+1. `G0` threat model and site review recorded, with no blanket permission claim; unknown or changed terms/controls fail closed for the affected scope.
 2. `G1` third-party skills have license, commit, hash and static behavior review.
 3. `G2` offline parsing/tailoring passes evidence and document round-trip checks.
-4. `G3` ego read-only search passes dedupe, rate-limit and injection fixtures.
+4. `G3` ego read-only search passes dedupe, rate-limit and injection fixtures for each explicitly named site/recruitment scope; unlisted scopes remain disabled.
 5. `G4` form dry-run passes on a test site with every field previewed.
-6. `G5` one real job may be submitted only after two explicit confirmations and a complete audit record.
+6. `G5` one consenting user's real job may be submitted only after two exact confirmations and a complete durable audit record; a pass enables only the tested site/ATS scope in a later pinned release.
 7. `G6` interruption, recovery, rollback and dependency re-review pass.
 8. `G7` the XHS demo uses fake data and cannot submit to a real employer.
 

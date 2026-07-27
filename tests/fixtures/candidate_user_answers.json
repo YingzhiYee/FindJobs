@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "profileId": "candidate-rowan-example",
+  "answers": [
+    {
+      "evidenceId": "USER-A1",
+      "question": "Which internship end date is correct?",
+      "answer": "August 2025",
+      "provenance": "user_provided",
+      "syntheticFixture": true
+    }
+  ]
+}

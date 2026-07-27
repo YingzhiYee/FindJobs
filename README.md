@@ -1,6 +1,8 @@
 # Find My Dream Job
 
-这是一个面向 Codex + ego(lite) 的求职流程启动包。它把简历理解、岗位发现、匹配分析、材料准备和投递状态设计串成一条可暂停、可复核的流程。当前 `0.3.4` 是发布前设计原型；真实招聘网站的 Fill/Submit 默认关闭，Discover/Draft 也要完成动态验收后才对外发布。
+这是一个面向 Codex + ego(lite) 的求职流程启动包。它把简历理解、岗位发现、匹配分析、材料准备和投递状态设计串成一条可暂停、可复核的流程。目标黄金路径是在用户逐步确认后辅助完成**一个岗位**：安装与登录交接、简历解析、搜岗、岗位选择、材料定制、填写前确认、提交前再次确认和本地记录；不做无人值守或批量投递。当前候选版实际开放范围以下一段为准。
+
+当前候选版本是 `0.4.0-beta.1`。它已放行在宿主具备可信文档能力时进行本地 PDF/DOCX 简历解析和材料定制、字节日常实习与腾讯校招全职的窄范围真实搜岗，以及维护者使用假数据受控表单进行的双确认填写/提交演示。真实招聘网站的 Fill/Submit 仍关闭；仓库中出现实现文件不等于验收通过。
 
 本仓库只负责流程编排和使用说明，不打包 ego(lite) 桌面应用，也不在默认情况下自动安装第三方脚本。第三方 skill 会先经过来源、许可证和行为检查；只有在你明确同意后，才考虑安装其必要依赖。
 
@@ -8,22 +10,37 @@
 
 ## 最简单的用法
 
-1. 安装并打开 [ego(lite)](https://lite.ego.app/document/zh/docs/quick-start)，按官方引导完成浏览器资料和登录态迁移。
-2. 准备一份最新简历（PDF 或 DOCX），并确认希望工作的城市、岗位方向、薪资和到岗时间。
-3. 打开 GitHub Releases 中对应固定版本的发布说明，把其中已经写入完整 commit 地址的整段提示词复制给 Codex。仓库内的 [`START_PROMPT.md`](START_PROMPT.md) 是维护者生成发布文案时使用的模板。
-4. 按 Codex 的提问依次完成岗位筛选和材料确认；当前测试版不会在真实招聘网站填写或投递。
+1. 打开 GitHub Releases 中对应固定版本的发布说明，把其中的一段短提示词复制给 Codex。它必须包含完整的 40 位 commit 地址。
+2. Codex 会先读取该固定版本的入口和验收状态；如果没有 ego(lite)，它只会引导你从[官方快速开始页面](https://lite.ego.app/document/zh/docs/quick-start)安装。
+3. 按提示在 ego(lite) 的图形界面中完成首次引导、按需导入 Chrome 数据，并亲自登录你允许访问的招聘网站。完成后明确回复 Codex，Codex 才会验证浏览器连接并继续。
+4. 上传最新简历（PDF 或 DOCX），确认求职偏好，依次完成已放行范围内的搜岗、单岗位选择、材料定制和确认。当前 Beta 会在真实招聘网站填写前停下；只有验收报告中的 `controlledFixtureRecordingReady` 为 `true` 时，录屏才可用仓库受控表单演示两次模拟确认、单次提交和本地记录。
 
-> XHS 只投放 GitHub Release 说明中的成品提示词。它必须指向 `https://github.com/YingzhiYee/FindJobs/tree/<40位commit>`，不能使用会持续漂移的 main/master 链接。
+Codex 每次只会让用户做一个动作。私有产物默认建议放到用户 Documents 目录下的 `FindMyDreamJob-private`，岗位偏好先只问方向、城市、招聘类型和毕业届别，其他条件确实需要时再补充。
+
+首次安装或升级 ego(lite) 后，Codex 当前任务可能仍保留启动时看到的旧 skill。遇到这种情况只需新建一个 Codex 任务并再次粘贴同一条 XHS 短 Prompt；不要混用桌面旧副本和 `/Applications` 中的新版本，也不要让 Codex 自动删除旧应用。
+
+> XHS 只投放 GitHub Release 说明中的成品提示词。仓库内无法把“包含自身的 commit hash”写进同一个 commit，因此 [`START_PROMPT.md`](START_PROMPT.md) 只保留占位模板。维护者必须先提交，再把得到的 hash 填入 Release 和 XHS 文案。不要使用会漂移的 main/master/HEAD、分支或可移动 tag 链接。
+
+成品提示词应尽量短，形式如下：
+
+```text
+请按这个固定版本协助我完成一次求职：https://github.com/YingzhiYee/FindJobs/tree/<40位commit>。先只读核对该 commit，并严格执行其中的 START_PROMPT.md；从指导我安装并完成 ego(lite) 图形界面引导开始，每次只处理一个岗位，填写和提交必须分别等我明确确认，验收未放行的真实操作必须停止。
+```
+
+完整流程和录屏完成标准见 [`docs/golden-path.md`](docs/golden-path.md)。
 
 ## 前置条件
 
 - 支持联网和读取 GitHub 仓库的 Codex 环境。
-- macOS 上已从官方渠道安装 ego(lite)，并完成首次 onboarding。
+- macOS；尚未安装 ego(lite) 时，Codex 会在流程内打开官方说明并等待你完成安装和首次 onboarding。
+- Codex 宿主已有经过信任的 PDF/DOCX 读取与导出能力；本仓库不携带通用解析器，也不会为此自动安装第三方依赖。能力缺失时会安全停止简历解析和材料导出。
 - 用户自己在 ego(lite) 中完成网站登录；不要把密码、Cookie、Token 或验证码发送给 Codex。
 - 一份由用户确认真实有效的简历，以及可公开用于求职的联系方式。
 - 用户了解目标网站的服务条款，并愿意逐条确认最终投递。
 
 ego(lite) 是外部桌面依赖。若未安装，Codex 只应引导你打开官方安装页面并等待你完成安装，不应下载来路不明的二进制或修改浏览器登录资料。
+
+浏览器兼容性使用 `config/skills.lock.yaml` 中的受支持运行身份清单。ego(lite) 版本和已加载 `ego-browser` 的版本、日期、SKILL.md SHA256 必须完整匹配清单中的同一组记录；未知、只能部分核对或不匹配的版本停止网页工作，但在宿主文档能力仍可用时可继续离线解析简历和起草材料。更新版本要先审查并加入清单，再随新的固定 commit 发布。
 
 ## 四种模式
 
@@ -35,21 +52,21 @@ ego(lite) 是外部桌面依赖。若未安装，Codex 只应引导你打开官�
 
 对岗位去重并进行人岗匹配，说明匹配证据、硬性缺口和不确定项；再针对用户选中的岗位生成简历修改稿、求职信或申请问答草稿。所有新增或改写内容必须能回溯到原简历或用户确认的信息，不能编造经历、数字、技能或证书。导出文件前先让用户查看差异。
 
-### Fill（填写，当前仅限受控测试表单）
+### Fill（填写，是否可用由验收报告决定）
 
 填写、上传或触发表单自动保存前，先展示目标公司、域名、岗位、材料版本和将披露的字段。用户明确授权向该岗位披露这些数据后，才使用 ego(lite) 填写或上传，并停在最终提交按钮之前。
 
-### Submit（提交，当前关闭）
+### Submit（提交，是否可用由验收报告决定）
 
 重新核对当前页面、附件哈希和最终答案，在用户第二次明确确认后只提交一次。遇到验证码、登录失效、付款、协议勾选或异常页面时暂停并交还用户处理。成功、失败、跳过或结果不确定都要记录；结果不确定时禁止自动重试。
 
 ## 如何加载本仓库流程
 
-首版采用固定 commit 的 GitHub 启动包：Release 说明中的成品提示词会要求 Codex 只读加载 `skills/find-my-dream-job/SKILL.md`、`skills/resume-evidence-profile/SKILL.md`、`skills/evidence-job-match/SKILL.md` 和 `skills/truthful-application-materials/SKILL.md`，再按模式执行。用户不需要手动运行安装命令；读取仓库也不代表授权安装依赖或执行脚本。不得因为找不到某个依赖文件就自行猜测或执行未知代码。
+首版采用固定 commit 的 GitHub 启动包：Release 说明中的短提示词先让 Codex 读取同一 commit 的 `START_PROMPT.md`，再只读加载 `skills/find-my-dream-job/SKILL.md`、`skills/resume-evidence-profile/SKILL.md`、`skills/evidence-job-match/SKILL.md` 和 `skills/truthful-application-materials/SKILL.md`。用户不需要手动运行仓库中的安装命令；读取仓库也不代表授权安装依赖或执行脚本。不得因为找不到某个依赖文件就自行猜测或执行未知代码。
 
 高级用户希望长期复用时，可以明确要求 Codex 使用内置 `skill-installer` 从固定的 GitHub commit 安装本仓库四个 skill。安装前仍要查看 `config/skills.lock.yaml` 和 `policies/`；不要把第三方依赖和安装脚本当成可信代码。
 
-`0.3.4` 不发布 marketplace 安装入口。首版 XHS 演示只走固定版本的 GitHub 提示词；等真实 Fill/Submit 通过动态验收后，再决定是否发布可安装插件。
+`0.4.0-beta.1` 不发布 marketplace 安装入口。首版 XHS 演示只走固定版本的 GitHub 提示词；所有能力是否可用始终以该固定 commit 内 `tests/acceptance-report.md` 的机器可读状态块为准。
 
 录屏前按 [`docs/xhs-demo.md`](docs/xhs-demo.md) 使用虚构简历和假联系方式；当前 G3 站点实测结论记录在 [`tests/acceptance-report.md`](tests/acceptance-report.md)。
 
@@ -80,7 +97,7 @@ ego(lite) 是外部桌面依赖。若未安装，Codex 只应引导你打开官�
 
 网站字段、登录状态和反自动化策略会变化；岗位信息可能过期或重复；生成的材料必须由用户自行核验。这个项目的目标是减少重复操作和提高复核效率，不承诺自动获得面试或绕过任何平台规则。
 
-## 发布前未决项
+## 后续真实投递门槛
 
-- 从 `START_PROMPT.md` 模板生成带完整 commit 地址的 GitHub Release 说明，并用 release tag 固定首个可演示版本。
-- 完成 `tests/acceptance-report.md` 所列的 ego(lite) 动态门槛后，再宣传填写或投递闭环；未完成时只演示 Discover/Draft 和测试表单。
+- 提交候选版本后，从 `START_PROMPT.md` 模板生成带完整 commit 地址的 GitHub Release/XHS 提示词；完整 commit 才是信任锚点，release tag 只用于发现版本。
+- 真实投递仍需一名同意参与的用户完成 G5：选择一个真实岗位，用真实材料完成两次精确确认、一次真实提交和结果记录；同一个目标站点/ATS 还必须补齐对应的 G4/G6 证据，包括独占锁竞争和恢复。全部通过后也只能在新的固定 commit 中放行实际验收过的精确范围；在此之前只能把受控表单称为投递演示。

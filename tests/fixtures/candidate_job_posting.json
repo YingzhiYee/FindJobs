@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "1.0",
+  "jobId": "job-bytedance-A106199",
+  "canonicalKey": "https://jobs.bytedance.com/campus/position/7665368414857726261/detail",
+  "platformJobId": "A106199",
+  "aliases": [
+    "https://jobs.bytedance.com/campus/position/7665368414857726261/detail"
+  ],
+  "source": {
+    "site": "ByteDance Careers",
+    "url": "https://jobs.bytedance.com/campus/position/7665368414857726261/detail",
+    "capturedAt": "2026-07-27T15:15:58Z",
+    "agentId": "golden-path-read-only"
+  },
+  "company": "ByteDance",
+  "title": "Risk Strategy Data Analysis Intern - TikTok Shop",
+  "location": "Shanghai",
+  "employmentType": "internship",
+  "recruitmentType": "internship",
+  "graduationCohorts": [],
+  "requirements": {
+    "must": [
+      "Current bachelor-or-higher student and available for at least three months",
+      "Risk-strategy data analysis, monitoring indicators, and alerts",
+      "Risk profiling and model or strategy development",
+      "Special analysis and strategy iteration recommendations",
+      "Independent model design/development and implementation",
+      "Cross-functional collaboration",
+      "Data analysis that finds insights, risk, and anomalies in complex data",
+      "AI/LLM application practice",
+      "Communication, collaboration, rigor, and English as a working language"
+    ],
+    "preferred": [
+      "Mathematics, statistics, or computer-science field",
+      "Risk-control experience"
+    ],
+    "education": [
+      "Bachelor degree or above, currently enrolled"
+    ],
+    "experience": [
+      "Internship availability of at least three months"
+    ],
+    "salary": null,
+    "deadline": null
+  },
+  "descriptionExcerpt": "International e-commerce merchant risk strategy data analysis; risk profiles/models; special analysis; independent model development and implementation; cross-functional collaboration.",
+  "evidenceRefs": [
+    {
+      "id": "JD-1",
+      "url": "https://jobs.bytedance.com/campus/position/7665368414857726261/detail",
+      "capturedAt": "2026-07-27T15:15:58Z",
+      "excerpt": "Daily internship for current students, three months or more."
+    },
+    {
+      "id": "JD-2",
+      "url": "https://jobs.bytedance.com/campus/position/7665368414857726261/detail",
+      "capturedAt": "2026-07-27T15:15:58Z",
+      "excerpt": "Analyze merchant risk strategy data; evaluate risk; design monitoring indicators and alerts."
+    },
+    {
+      "id": "JD-3",
+      "url": "https://jobs.bytedance.com/campus/position/7665368414857726261/detail",
+      "capturedAt": "2026-07-27T15:15:58Z",
+      "excerpt": "Mine merchant risk profiles; build models or strategies; provide analysis and iteration recommendations."
+    },
+    {
+      "id": "JD-4",
+      "url": "https://jobs.bytedance.com/campus/position/7665368414857726261/detail",
+      "capturedAt": "2026-07-27T15:15:58Z",
+      "excerpt": "Independently design/develop models and drive implementation; collaborate with product, operations, algorithm, and engineering."
+    },
+    {
+      "id": "JD-5",
+      "url": "https://jobs.bytedance.com/campus/position/7665368414857726261/detail",
+      "capturedAt": "2026-07-27T15:15:58Z",
+      "excerpt": "Current bachelor-or-higher student; math/statistics/computer science preferred."
+    },
+    {
+      "id": "JD-6",
+      "url": "https://jobs.bytedance.com/campus/position/7665368414857726261/detail",
+      "capturedAt": "2026-07-27T15:15:58Z",
+      "excerpt": "Data analysis, complex-data insight/risk/anomaly detection, AI/LLM practice, communication, rigor, working English; risk-control experience preferred."
+    }
+  ],
+  "deduplication": {
+    "decision": "unique",
+    "primaryJobId": null,
+    "evidenceRefs": [
+      "JD-1"
+    ]
+  },
+  "freshness": "current",
+  "status": "candidate"
+}

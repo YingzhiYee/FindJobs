@@ -12,6 +12,7 @@
 - [couragec/LLMInternSkill](https://github.com/couragec/LLMInternSkill) — MIT，审计 commit `11db44f57b3d78ae3f83072b3959cd7a5d85df0b`；参考中文场景的 evidence contract 和 truth boundary，未复制字体/LaTeX/脚本目录。
 - [dhanushk-offl/resume-parser](https://github.com/dhanushk-offl/resume-parser) — MIT，审计 commit `050d7e851d7a97393980cad250d5d0f771cfff2c`；raw-text 测试通过但真实 PDF 失败处理不可靠，仅参考 schema。
 - [bowenliang123/markdown-exporter](https://github.com/bowenliang123/markdown-exporter) — Apache-2.0，审计 commit `bc216faa6dc490208c4e229c973c81acde85a430`；因远程/本地资源嵌入和依赖漏洞排除。
+- [Sma1lboy/coforce-apply](https://github.com/Sma1lboy/coforce-apply) — MIT，审计 commit `44aa91ac519aebe9a07b0ee33f91bb393d04d9b4`；仅参考流程设计，因危险权限模式、自动账号/邮件流程、状态校验缺陷和许可证来源疑点，不复制或安装代码。
 
 ## 不纳入公开 bundle 的候选
 
