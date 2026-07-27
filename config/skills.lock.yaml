@@ -1,0 +1,156 @@
+schemaVersion: 1
+policy:
+  installByDefault: false
+  approvedForInstallation: []
+  requireLicenseFile: true
+  requireCommitAndContentHash: true
+  allowLicenses: [MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause]
+  forbiddenBehaviors:
+    - read_browser_cookies_or_tokens
+    - read_passwords_or_otp
+    - upload_resume_without_explicit_consent
+    - auto_submit_application
+    - bypass_captcha_or_access_control
+
+runtimeDependencies:
+  - id: ego-browser
+    distribution: ego-lite-official
+    officialInstallDocs: https://lite.ego.app/document/zh/docs/quick-start
+    egoLiteVersion: 0.4.6.0
+    skillVersion: 1.2.5
+    skillDate: "2026-07-16"
+    skillSha256: 3d2d43ba61ace9977827f0343d333c597ac6f3d1a0a207a4a62b16468c3292c7
+    status: runtime-reviewed
+    mismatchPolicy: stop-browser-work-and-review-new-version
+
+skills:
+  - id: resume-skills-jd-tailor
+    repository: https://github.com/Paramchoudhary/ResumeSkills
+    paths:
+      - skills/job-description-analyzer
+      - skills/resume-tailor
+      - skills/cover-letter-generator
+      - skills/application-form-filler
+      - skills/resume-version-manager
+    license: MIT
+    licenseSha256: 779da7ca4855d53a7800c744fef206c6265ace2e1eefef8ab608a0ccfb6d751d
+    commit: 74ae19e7c62b0516d1c298328e5544976c12da5d
+    files:
+      - {path: skills/job-description-analyzer/SKILL.md, sha256: 9898051a4a54ddeb82115778e4dfe24dbf226a6457dcb7be6c94bddca15479d5}
+      - {path: skills/resume-tailor/SKILL.md, sha256: 96853a389e2043cd3cc46667b89576cd3755bbef2c72ebeafc486230609b0981}
+      - {path: skills/cover-letter-generator/SKILL.md, sha256: 1b84e3d487f982700ab69fab1cf945fa785bf4a4266e8946e47401b1fe5ebc6c}
+      - {path: skills/application-form-filler/SKILL.md, sha256: c5804ccbc6e34d05edd59a86f3246259a73f96f1fcd7ba253fd9e48c1ddca8d8}
+      - {path: skills/resume-version-manager/SKILL.md, sha256: ddf1acc97694e7710c9091dc547942a424f16601b2c8b35ce1c317f3b19b94f7}
+    status: audited-adapted-no-vendor
+    reason: Pure Markdown, but none are safe unchanged; bundled skills implement adapted evidence and consent boundaries.
+
+  - id: build-tailored-resume
+    repository: https://github.com/SankaiAI/ats-optimized-resume-agent-skill
+    paths:
+      - SKILL.md
+      - skills/build-tailored-resume
+    license: MIT
+    licenseSha256: 6f07b466ddc5a0a191d6a105b2b8c372e768bc7d9888323c71ccaadb5085253b
+    commit: 153209b510e6ca168ab50a6b0d4f19e380979d73
+    files:
+      - {path: renderer/pyproject.toml, sha256: a2f60eccf85da222e229de7eba4a593ab8ec7b2f5733c34a6963a201fa2214bb}
+      - {path: renderer/src/cli.py, sha256: f765e0645e4f0387e1b6e94e7b68e6e31eca95c58fec387f1222902b63749495}
+      - {path: renderer/src/schemas/resume_schema.py, sha256: 6499d1431dd80a78f8c21be6fc942f18e21a4ba3ac9930e0cf5efdcafd2d4f30}
+      - {path: renderer/src/validation/validate_output.py, sha256: 6f051b4677aa6ac50f7b505622dddfc2f08e72bebf6b2d5b825c5d7fd7c2c954}
+      - {path: renderer/src/rendering/config.py, sha256: af801677c4b16984ac0790b90d2c50315409b2bdec9da10df3434f21625ad5b9}
+      - {path: renderer/src/rendering/render_docx.py, sha256: 141d2d878e4ecb02aa1c8e032899ad0c16481e789eca5eb6fdbdd474677ae6ee}
+    status: reference-only
+    reason: Cropped local renderer source passed upstream tests and a synthetic DOCX smoke test, but runtime wheels are not hash-locked; original installers/bin/SKILL remain excluded and no dependency is installed.
+
+  - id: jobs-finder-toolkit
+    repository: https://github.com/QuentinMeow/jobs-finder-toolkit
+    paths:
+      - skills/job-search
+      - skills/resume-writer
+      - skills/application-tracker
+    license: Apache-2.0
+    commit: 070324a06584648964e9aa8ddc8f90cdbe4cd2cd
+    files:
+      - {path: schemas/posting.v1.json, sha256: 92c767c6dff7983e2afccbb32fc753a3f27783e475a119387a2880f0311e8dc4}
+      - {path: schemas/event-line.v1.json, sha256: 5c686b0c0b6e247765808d8beccfdf9e5f26ed84fe0473463144674183fc2b84}
+      - {path: schemas/annotation.v1.json, sha256: d1e8d257f39a18c477810115559377483b044c3c01a06500b05541b005e1b2dd}
+    status: reference-only
+    reason: Schema reference only; full repo has broad network/API/email/SSRF exposure and must not be installed.
+
+  - id: job-search-hq
+    repository: https://github.com/Miracle-Aligner/job-search-hq
+    paths: [.claude/skills]
+    license: MIT
+    commit: de55c15dfc526d2058333fdc0820646a5550b52f
+    contentSha256: null
+    status: reference-only
+    reason: Local JSON CRM and append-only status history; Claude-specific layout.
+
+  - id: job-search-agent-skills
+    repository: https://github.com/OriginalDopey/job-search-agent-skills
+    paths: [skills]
+    license: MIT
+    commit: c85cde88e6b62dc984b2cfd8daad22d877672fb4
+    contentSha256: null
+    status: reference-only
+    reason: Simple evidence-based fit rubric and tracker patterns.
+
+  - id: llm-intern-skill
+    repository: https://github.com/couragec/LLMInternSkill
+    paths: [skills, skill-references]
+    license: MIT
+    commit: 11db44f57b3d78ae3f83072b3959cd7a5d85df0b
+    files:
+      - {path: skill-references/truth-boundary.md, sha256: 319f1edeb51c04c06518312e142f7f3e4c3962feb9d61ca031a11dea3ac9aea0}
+      - {path: skill-references/evidence-contract.md, sha256: ea7745f7d01a913792acecbe51d468ea22212ccb1350ea8fd9da1e078156cf38}
+      - {path: skill-references/materials-audit.md, sha256: 4a1885f5f299bf81004509fa8767ef0a38f2215c31ba918dea15cd3dc7ef28b8}
+    status: audited-adapted-no-vendor
+    reason: Pure Markdown truth/evidence rules informed the bundled safe adapters; domain-specific source is not installed.
+
+  - id: resume-parser-ats
+    repository: https://github.com/dhanushk-offl/resume-parser
+    paths: [resume-parser-ats]
+    license: MIT
+    licenseSha256: 56f7ef22e8536b4508e2ce5a846ade5de4c6c87879c698186f53b44515ef291a
+    commit: 050d7e851d7a97393980cad250d5d0f771cfff2c
+    files:
+      - {path: resume-parser-ats/SKILL.md, sha256: 8ec74d2af0fd6741dccb46d479071fa1eda54be7eaca994bcf839885b8a32e0e}
+      - {path: package.json, sha256: a5ed54ff7ab3628d0c0ed598a85cc26c3929806e2ea7babe0331c8f4a8e7a1e1}
+    status: reference-only
+    reason: Raw-text tests pass, but a real PDF can fail while analysis still reports success/ATS score; English-biased heuristics and unrestricted paths make it unfit as the fact parser.
+
+  - id: markdown-exporter
+    repository: https://github.com/bowenliang123/markdown-exporter
+    paths: [SKILL.md]
+    license: Apache-2.0
+    licenseSha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
+    commit: bc216faa6dc490208c4e229c973c81acde85a430
+    files:
+      - {path: SKILL.md, sha256: fe263cb0eb04ed85bb73ba9e8e9e215c90855059d2d46baf3db3d58f44b58d3c}
+      - {path: requirements.txt, sha256: 605db18f6155a5b293d8a57606e54cf5ca7e67607a910addc9739b1605b44b52}
+    status: excluded
+    reason: Remote images/local paths can be embedded from untrusted Markdown, dependency surface is excessive, Pillow constraint has known vulnerabilities, and tests rely on undeclared tooling.
+
+  - id: coforce-apply-reference
+    repository: https://github.com/Sma1lboy/coforce-apply
+    paths:
+      - .agents/skills/start
+      - .agents/skills/campaign
+      - .agents/skills/apply
+      - .agents/skills/tracker
+    license: MIT
+    commit: 44aa91ac519aebe9a07b0ee33f91bb393d04d9b4
+    status: reference-only
+    reason: Design reference only; Chrome dangerous-permission mode, auto account/email flows, CSRF/state flaws and license provenance concern forbid code vendoring.
+
+excluded:
+  - repository: https://github.com/Jichengyuuuuu/resume-builder-skill
+    reason: No repository LICENSE file; cannot redistribute safely.
+  - repository: https://github.com/eonghk/jobsparrow-ai-skill
+    reason: No repository LICENSE file and requires a paid external service that receives resume data.
+  - repository: https://github.com/surapuramakhil-org/Job_search_agent
+    reason: AGPL-3.0 and describes automatic application submission; not suitable for this bundle.
+  - repository: https://github.com/anthropics/skills
+    reason: Proprietary license for referenced document skills; reference only, no copying.
+  - repository: https://github.com/Nebutra/MinerU-Skill
+    reason: Default cloud processing of local documents; opt-in only after a separate privacy review.

@@ -1,0 +1,32 @@
+{
+  "name": "find-my-dream-job",
+  "version": "0.3.4",
+  "description": "Safe job discovery and truthful application drafting, with test-only consent gates for future ego-browser filling and submission.",
+  "author": {
+    "name": "YingzhiYee"
+  },
+  "keywords": [
+    "job-search",
+    "resume",
+    "ego-browser"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Find My Dream Job",
+    "shortDescription": "A reviewable Codex + ego(lite) job-search workflow.",
+    "longDescription": "Discover jobs, compare evidence, and draft truthful materials. Real form filling and submission remain disabled until the published dynamic acceptance gates pass.",
+    "developerName": "YingzhiYee",
+    "category": "Productivity",
+    "capabilities": [
+      "Job discovery",
+      "Resume matching",
+      "Application drafting",
+      "Controlled consent-gate testing"
+    ],
+    "defaultPrompt": [
+      "Start a safe job search in Discover mode.",
+      "Compare my resume with selected jobs.",
+      "Prepare truthful application drafts for review."
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+# User-controlled job data; never commit real resumes or application history.
+profile/
+applications/
+private/
+*.pdf
+*.docx
+*.doc
+*.pages
+*.xlsx
+*.csv
+*.jsonl
+*.log
+screenshots/
+artifacts/
+.env
+.env.*
+!.env.example
+
+# Local dependency and agent state.
+.venv/
+node_modules/
+.cache/
+.agents-state/
