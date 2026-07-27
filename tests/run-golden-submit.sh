@@ -1,23 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
-EXPECTED_EGO_LITE_VERSION="0.4.6.0"
 EXPECTED_APP_BUNDLE="/Applications/AI product Builder/ego.app"
 EXPECTED_APP_EXECUTABLE="/Applications/AI product Builder/ego.app/Contents/MacOS/ego"
 EXPECTED_BUNDLE_IDENTIFIER="com.citrolabs.ego"
-EXPECTED_BUNDLE_VERSION="4.6.0"
 EXPECTED_TEAM_IDENTIFIER="JGQLC6YQYJ"
-EXPECTED_CODE_DIRECTORY_SHA256="33b94e875cd08f47e7dc08211e22db0548b84145fe0aacb7524156073c04e1d4"
-EXPECTED_EXECUTABLE_SHA256="25f439ccc7704a0395ad98eb678d29dd9ac08d7544f922259018c76a7a0473b3"
 EXPECTED_DESIGNATED_REQUIREMENT='identifier "com.citrolabs.ego" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = JGQLC6YQYJ'
-EXPECTED_SKILL_VERSION="1.2.5"
-EXPECTED_SKILL_DATE="2026-07-16"
-EXPECTED_SKILL_SHA256="3d2d43ba61ace9977827f0343d333c597ac6f3d1a0a207a4a62b16468c3292c7"
-EXPECTED_CODESIGN_VERIFICATION="valid-on-disk-and-satisfies-designated-requirement"
-EXPECTED_GATEKEEPER_RESULT="accepted"
-EXPECTED_GATEKEEPER_SOURCE="Notarized Developer ID"
-EXPECTED_REVIEWED_AT="2026-07-27"
-EXPECTED_RUNTIME_STATUS="supported"
 EXPECTED_RELEASE="0.4.0-beta.1"
 EXPECTED_FORM_SHA256="c6274b6b8ad23e07f8ce375ab15620dcf7312afd2bbe97668cd4ba16892ef237"
 EXPECTED_FIELDS_SHA256="715dd35a13276af55b6a9f178378876e8a3c5929568912be145ad9e9e1e4b2da"
@@ -38,7 +26,27 @@ HARNESS_FIELDS="$HARNESS_FIXTURE_DIR/application-fake-fields.json"
 HARNESS_RESUME="$HARNESS_FIXTURE_DIR/application-fake-resume.txt"
 HARNESS_LOCK="$HARNESS_REPO_DIR/config/skills.lock.yaml"
 HARNESS_ACCEPTANCE_REPORT="$HARNESS_REPO_DIR/tests/acceptance-report.md"
-HARNESS_ACTIVE_VERSION_LINK="$HOME/.local/share/ego/active_version_dir"
+HARNESS_RUNTIME_RESOLVER="$HARNESS_REPO_DIR/scripts/resolve-latest-ego-runtime.sh"
+if [ ! -x "$HARNESS_RUNTIME_RESOLVER" ]; then
+  echo "The latest stable ego runtime resolver is missing or not executable." >&2
+  exit 1
+fi
+HARNESS_RUNTIME_IDENTITY="$($HARNESS_RUNTIME_RESOLVER --tsv)"
+IFS=$'\t' read -r HARNESS_RUNTIME_READY \
+  EXPECTED_EGO_LITE_VERSION \
+  EXPECTED_BUNDLE_VERSION \
+  EXPECTED_CODE_DIRECTORY_SHA256 \
+  EXPECTED_EXECUTABLE_SHA256 \
+  EXPECTED_SKILL_VERSION \
+  EXPECTED_SKILL_DATE \
+  EXPECTED_SKILL_SHA256 \
+  EXPECTED_SKILL_ASSET_SHA256 \
+  EXPECTED_SKILL_RELEASE_TAG <<< "$HARNESS_RUNTIME_IDENTITY"
+if [ "$HARNESS_RUNTIME_READY" != "ready" ]; then
+  echo "The latest stable ego runtime resolver did not return ready." >&2
+  exit 1
+fi
+
 HARNESS_TMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/findjobs-golden-submit.XXXXXX")"
 HARNESS_LEDGER_DIR="$HARNESS_TMP_DIR/ledger"
 HARNESS_SERVER_LOG="$HARNESS_TMP_DIR/server.log"
@@ -65,7 +73,7 @@ on_exit() {
 trap on_exit EXIT
 trap 'exit 130' INT TERM
 
-for HARNESS_REQUIRED_FILE in "$HARNESS_FORM" "$HARNESS_FIELDS" "$HARNESS_RESUME" "$HARNESS_LOCK" "$HARNESS_ACCEPTANCE_REPORT"; do
+for HARNESS_REQUIRED_FILE in "$HARNESS_FORM" "$HARNESS_FIELDS" "$HARNESS_RESUME" "$HARNESS_LOCK" "$HARNESS_ACCEPTANCE_REPORT" "$HARNESS_RUNTIME_RESOLVER"; do
   if [ ! -f "$HARNESS_REQUIRED_FILE" ]; then
     echo "Missing controlled harness file: $HARNESS_REQUIRED_FILE" >&2
     exit 1
@@ -80,6 +88,7 @@ HARNESS_PINNED_FILES=(
   "tests/acceptance-report.md"
   "tests/golden-submit-runbook.md"
   "config/skills.lock.yaml"
+  "scripts/resolve-latest-ego-runtime.sh"
   "policies/security.md"
   "skills/find-my-dream-job/references/application-ledger.md"
 )
@@ -168,19 +177,11 @@ if [ "$(shasum -a 256 "$HARNESS_FORM" | awk '{print $1}')" != "$EXPECTED_FORM_SH
   exit 1
 fi
 
-if [ ! -L "$HARNESS_ACTIVE_VERSION_LINK" ]; then
-  echo "ego(lite) onboarding has not registered an active runtime symlink." >&2
+HARNESS_ACTIVE_VERSION_DIR="$EXPECTED_APP_BUNDLE/Contents/Frameworks/ego Framework.framework/Versions/$EXPECTED_EGO_LITE_VERSION"
+if [ ! -d "$HARNESS_ACTIVE_VERSION_DIR" ]; then
+  echo "The latest /Applications runtime is missing from the reviewed app bundle." >&2
   exit 1
 fi
-HARNESS_ACTIVE_VERSION_DIR="$(cd -P "$HARNESS_ACTIVE_VERSION_LINK" && pwd)"
-if [ "$(basename "$HARNESS_ACTIVE_VERSION_DIR")" != "$EXPECTED_EGO_LITE_VERSION" ]; then
-  echo "Unsupported ego(lite) runtime: $HARNESS_ACTIVE_VERSION_DIR" >&2
-  exit 1
-fi
-case "$HARNESS_ACTIVE_VERSION_DIR" in
-  "$EXPECTED_APP_BUNDLE"/Contents/Frameworks/ego\ Framework.framework/Versions/"$EXPECTED_EGO_LITE_VERSION") ;;
-  *) echo "Active ego(lite) runtime is not inside the reviewed app bundle." >&2; exit 1 ;;
-esac
 
 if [ ! -x "$EXPECTED_APP_EXECUTABLE" ]; then
   echo "Reviewed ego(lite) executable is missing." >&2
@@ -213,7 +214,7 @@ if ! printf '%s\n' "$HARNESS_GATEKEEPER" | grep -Fqx "$EXPECTED_APP_BUNDLE: acce
   echo "ego(lite) Gatekeeper result does not match the reviewed tuple." >&2
   exit 1
 fi
-HARNESS_SKILL="$HARNESS_ACTIVE_VERSION_LINK/Resources/ego-skills/ego-browser/SKILL.md"
+HARNESS_SKILL="$HARNESS_ACTIVE_VERSION_DIR/Resources/ego-skills/ego-browser/SKILL.md"
 if [ ! -f "$HARNESS_SKILL" ]; then
   echo "Reviewed ego-browser skill is missing from the active runtime." >&2
   exit 1
@@ -229,94 +230,69 @@ if ! grep -Fqx "  version: \"$EXPECTED_SKILL_VERSION\"" "$HARNESS_SKILL" || \
   exit 1
 fi
 
-if ! awk -v expected_path="$EXPECTED_APP_BUNDLE" \
-         -v expected_executable="$EXPECTED_APP_EXECUTABLE" \
-         -v expected_bundle_id="$EXPECTED_BUNDLE_IDENTIFIER" \
-         -v expected_app="$EXPECTED_EGO_LITE_VERSION" \
-         -v expected_bundle_version="$EXPECTED_BUNDLE_VERSION" \
-         -v expected_team="$EXPECTED_TEAM_IDENTIFIER" \
-         -v expected_requirement="$EXPECTED_DESIGNATED_REQUIREMENT" \
-         -v expected_cdhash="$EXPECTED_CODE_DIRECTORY_SHA256" \
-         -v expected_executable_hash="$EXPECTED_EXECUTABLE_SHA256" \
-         -v expected_codesign="$EXPECTED_CODESIGN_VERIFICATION" \
-         -v expected_gatekeeper="$EXPECTED_GATEKEEPER_RESULT" \
-         -v expected_gatekeeper_source="$EXPECTED_GATEKEEPER_SOURCE" \
-         -v expected_skill="$EXPECTED_SKILL_VERSION" \
-         -v expected_skill_date="$EXPECTED_SKILL_DATE" \
-         -v expected_hash="$EXPECTED_SKILL_SHA256" \
-         -v expected_reviewed_at="$EXPECTED_REVIEWED_AT" \
-         -v expected_status="$EXPECTED_RUNTIME_STATUS" '
-  function clean(s, first, last, quote) {
-    gsub(/^[[:space:]]+|[[:space:]]+$/, "", s)
-    first = substr(s, 1, 1)
-    last = substr(s, length(s), 1)
-    quote = sprintf("%c", 39)
-    if ((first == "\"" && last == "\"") || (first == quote && last == quote)) {
-      s = substr(s, 2, length(s) - 2)
-    }
-    return s
+if ! awk '
+  /^[[:space:]]+match:[[:space:]]+latest-official-stable-signed-runtime[[:space:]]*$/ { match_policy++ }
+  /^[[:space:]]+update:[[:space:]]+resolve-official-latest-at-runtime[[:space:]]*$/ { update_policy++ }
+  /^[[:space:]]+resolver:[[:space:]]+scripts\/resolve-latest-ego-runtime[.]sh[[:space:]]*$/ { resolver++ }
+  /^[[:space:]]+appBundlePath:[[:space:]]+\/Applications\/AI product Builder\/ego[.]app[[:space:]]*$/ { app_path++ }
+  /^[[:space:]]+bundleIdentifier:[[:space:]]+com[.]citrolabs[.]ego[[:space:]]*$/ { bundle_id++ }
+  /^[[:space:]]+teamIdentifier:[[:space:]]+JGQLC6YQYJ[[:space:]]*$/ { team_id++ }
+  /^[[:space:]]+skillLatestRelease:[[:space:]]+https:\/\/github[.]com\/citrolabs\/ego-lite\/releases\/latest[[:space:]]*$/ { latest_release++ }
+  END {
+    ok = match_policy == 1 && update_policy == 1 && resolver == 1 &&
+         app_path >= 1 && bundle_id >= 1 && team_id >= 1 && latest_release == 1
+    exit(ok ? 0 : 1)
   }
-  function scalar(line) { sub(/^[^:]*:[[:space:]]*/, "", line); return clean(line) }
-  function finish_tuple() {
-    if (app_path == expected_path && executable == expected_executable && bundle_id == expected_bundle_id &&
-        app == expected_app && bundle_version == expected_bundle_version && team == expected_team &&
-        requirement == expected_requirement && cdhash == expected_cdhash && executable_hash == expected_executable_hash &&
-        codesign == expected_codesign && gatekeeper == expected_gatekeeper &&
-        gatekeeper_source == expected_gatekeeper_source && skill == expected_skill &&
-        skill_date == expected_skill_date && hash == expected_hash && reviewed_at == expected_reviewed_at &&
-        status == expected_status) found = 1
-  }
-  /^[[:space:]]+- appBundlePath:/ {
-    if (in_tuple) finish_tuple()
-    in_tuple = 1
-    app_path = scalar($0); executable = ""; bundle_id = ""; app = ""; bundle_version = ""
-    team = ""; requirement = ""; cdhash = ""; executable_hash = ""; codesign = ""
-    gatekeeper = ""; gatekeeper_source = ""; skill = ""; skill_date = ""; hash = ""
-    reviewed_at = ""; status = ""; next
-  }
-  in_tuple && /^[[:space:]]+executablePath:/ { executable = scalar($0); next }
-  in_tuple && /^[[:space:]]+bundleIdentifier:/ { bundle_id = scalar($0); next }
-  in_tuple && /^[[:space:]]+egoLiteVersion:/ { app = scalar($0); next }
-  in_tuple && /^[[:space:]]+bundleVersion:/ { bundle_version = scalar($0); next }
-  in_tuple && /^[[:space:]]+teamIdentifier:/ { team = scalar($0); next }
-  in_tuple && /^[[:space:]]+designatedRequirement:/ { requirement = scalar($0); next }
-  in_tuple && /^[[:space:]]+codeDirectorySha256:/ { cdhash = scalar($0); next }
-  in_tuple && /^[[:space:]]+executableSha256:/ { executable_hash = scalar($0); next }
-  in_tuple && /^[[:space:]]+codesignVerification:/ { codesign = scalar($0); next }
-  in_tuple && /^[[:space:]]+gatekeeperResult:/ { gatekeeper = scalar($0); next }
-  in_tuple && /^[[:space:]]+gatekeeperSource:/ { gatekeeper_source = scalar($0); next }
-  in_tuple && /^[[:space:]]+skillVersion:/ { skill = scalar($0); next }
-  in_tuple && /^[[:space:]]+skillDate:/ { skill_date = scalar($0); next }
-  in_tuple && /^[[:space:]]+skillSha256:/ { hash = scalar($0); next }
-  in_tuple && /^[[:space:]]+reviewedAt:/ { reviewed_at = scalar($0); next }
-  in_tuple && /^[[:space:]]+status:/ { status = scalar($0); next }
-  /^skills:/ { if (in_tuple) finish_tuple(); in_tuple = 0; next }
-  END { if (in_tuple) finish_tuple(); exit(found ? 0 : 1) }
 ' "$HARNESS_LOCK"; then
-  echo "The reviewed runtime tuple is absent from config/skills.lock.yaml." >&2
+  echo "The latest stable runtime policy is absent from config/skills.lock.yaml." >&2
   exit 1
 fi
 
-HARNESS_EGO_MAIN_PROCESSES="$(/bin/ps -axo pid=,command= | awk '
-  {
-    pid = $1
-    $1 = ""
-    sub(/^[[:space:]]+/, "")
-    command = $0
-    lower = tolower(command)
-    if (lower ~ /\/ego( lite)?[.]app\/contents\/macos\//) {
-      print pid "\t" command
+collect_ego_main_processes() {
+  /bin/ps -axo pid=,command= | awk '
+    {
+      pid = $1
+      $1 = ""
+      sub(/^[[:space:]]+/, "")
+      command = $0
+      lower = tolower(command)
+      if (lower ~ /\/ego( lite)?[.]app\/contents\/macos\//) {
+        print pid "\t" command
+      }
     }
-  }
-')"
-HARNESS_EGO_MAIN_COUNT="$(printf '%s\n' "$HARNESS_EGO_MAIN_PROCESSES" | awk 'NF { count++ } END { print count + 0 }')"
-HARNESS_REVIEWED_MAIN_COUNT="$(printf '%s\n' "$HARNESS_EGO_MAIN_PROCESSES" | awk -F '\t' -v expected="$EXPECTED_APP_EXECUTABLE" '
-  {
-    command = $2
-    if (command == expected || index(command, expected " ") == 1) count++
-  }
-  END { print count + 0 }
-')"
+  '
+}
+
+count_ego_main_processes() {
+  printf '%s\n' "$HARNESS_EGO_MAIN_PROCESSES" | awk 'NF { count++ } END { print count + 0 }'
+}
+
+count_reviewed_main_processes() {
+  printf '%s\n' "$HARNESS_EGO_MAIN_PROCESSES" | awk -F '\t' -v expected="$EXPECTED_APP_EXECUTABLE" '
+    {
+      command = $2
+      if (command == expected || index(command, expected " ") == 1) count++
+    }
+    END { print count + 0 }
+  '
+}
+
+HARNESS_EGO_MAIN_PROCESSES="$(collect_ego_main_processes)"
+HARNESS_EGO_MAIN_COUNT="$(count_ego_main_processes)"
+if [ "$HARNESS_EGO_MAIN_COUNT" -eq 0 ]; then
+  /usr/bin/open "$EXPECTED_APP_BUNDLE"
+  HARNESS_START_ATTEMPT=0
+  while [ "$HARNESS_START_ATTEMPT" -lt 80 ]; do
+    HARNESS_EGO_MAIN_PROCESSES="$(collect_ego_main_processes)"
+    HARNESS_EGO_MAIN_COUNT="$(count_ego_main_processes)"
+    if [ "$HARNESS_EGO_MAIN_COUNT" -gt 0 ]; then
+      break
+    fi
+    sleep 0.25
+    HARNESS_START_ATTEMPT=$((HARNESS_START_ATTEMPT + 1))
+  done
+fi
+HARNESS_REVIEWED_MAIN_COUNT="$(count_reviewed_main_processes)"
 if [ "$HARNESS_EGO_MAIN_COUNT" -ne 1 ] || [ "$HARNESS_REVIEWED_MAIN_COUNT" -ne 1 ]; then
   echo "Exactly one ego main process, from the reviewed app bundle, must be running before the fixture server starts." >&2
   if [ -n "$HARNESS_EGO_MAIN_PROCESSES" ]; then
@@ -325,16 +301,11 @@ if [ "$HARNESS_EGO_MAIN_COUNT" -ne 1 ] || [ "$HARNESS_REVIEWED_MAIN_COUNT" -ne 1
   exit 1
 fi
 
-HARNESS_EGO_BROWSER="$(command -v ego-browser || true)"
-if [ -z "$HARNESS_EGO_BROWSER" ] || [ ! -x "$HARNESS_EGO_BROWSER" ]; then
-  echo "ego-browser is unavailable; finish ego(lite) GUI onboarding first." >&2
+HARNESS_EGO_BROWSER="$HARNESS_ACTIVE_VERSION_DIR/Helpers/ego-browser"
+if [ ! -x "$HARNESS_EGO_BROWSER" ]; then
+  echo "The latest /Applications runtime does not contain ego-browser." >&2
   exit 1
 fi
-HARNESS_EGO_BROWSER_TARGET="$(readlink "$HARNESS_EGO_BROWSER" || true)"
-case "$HARNESS_EGO_BROWSER_TARGET" in
-  "$HARNESS_ACTIVE_VERSION_LINK"/Helpers/ego-browser|"$HARNESS_ACTIVE_VERSION_DIR"/Helpers/ego-browser) ;;
-  *) echo "ego-browser does not point at the reviewed active runtime." >&2; exit 1 ;;
-esac
 
 /usr/bin/python3 - "$HARNESS_FORM" "$HARNESS_HOST" "$HARNESS_PORT" \
   >"$HARNESS_SERVER_LOG" 2>&1 <<'PY' &
@@ -419,32 +390,56 @@ if [ "$HARNESS_SERVER_READY" != "true" ]; then
   exit 1
 fi
 
-export FINDJOBS_HARNESS_URL="http://$HARNESS_HOST:$HARNESS_PORT/application-form.html?scenario=success&case=maintainer-harness"
-export FINDJOBS_HARNESS_REPO="$HARNESS_REPO_DIR"
-export FINDJOBS_HARNESS_FIELDS="$HARNESS_FIELDS"
-export FINDJOBS_HARNESS_RESUME="$HARNESS_RESUME"
-export FINDJOBS_HARNESS_LEDGER_DIR="$HARNESS_LEDGER_DIR"
-export FINDJOBS_EXPECTED_EGO_VERSION="$EXPECTED_EGO_LITE_VERSION"
-export FINDJOBS_EXPECTED_SKILL_VERSION="$EXPECTED_SKILL_VERSION"
-export FINDJOBS_EXPECTED_SKILL_SHA="$EXPECTED_SKILL_SHA256"
-export FINDJOBS_SOURCE_COMMIT="$HARNESS_SOURCE_COMMIT"
+HARNESS_CONFIG_JSON="$(/usr/bin/python3 - \
+  "$HARNESS_REPO_DIR" \
+  "$HARNESS_FIELDS" \
+  "$HARNESS_RESUME" \
+  "$HARNESS_LEDGER_DIR" \
+  "http://$HARNESS_HOST:$HARNESS_PORT/application-form.html?scenario=success&case=maintainer-harness" \
+  "$EXPECTED_EGO_LITE_VERSION" \
+  "$EXPECTED_SKILL_VERSION" \
+  "$EXPECTED_SKILL_SHA256" \
+  "$HARNESS_SOURCE_COMMIT" <<'PY'
+import json
+import sys
 
-"$HARNESS_EGO_BROWSER" nodejs <<'EOF' | tee "$HARNESS_RESULT"
+keys = (
+    "repoDir",
+    "fieldsPath",
+    "resumePath",
+    "ledgerDir",
+    "expectedUrl",
+    "expectedEgoVersion",
+    "expectedSkillVersion",
+    "expectedSkillSha",
+    "sourceCommit",
+)
+print(json.dumps(dict(zip(keys, sys.argv[1:])), separators=(",", ":")))
+PY
+)"
+
+{
+  printf 'const harnessConfig = Object.freeze(%s)\n' "$HARNESS_CONFIG_JSON"
+  /bin/cat <<'EOF'
 import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
 
-const expectedUrl = new URL(process.env.FINDJOBS_HARNESS_URL)
-const repoDir = fs.realpathSync(process.env.FINDJOBS_HARNESS_REPO)
+const expectedUrl = new URL(harnessConfig.expectedUrl)
+const repoDir = fs.realpathSync(harnessConfig.repoDir)
 const fixturesDir = fs.realpathSync(path.join(repoDir, 'tests', 'fixtures'))
-const fieldsPath = fs.realpathSync(process.env.FINDJOBS_HARNESS_FIELDS)
-const resumePath = fs.realpathSync(process.env.FINDJOBS_HARNESS_RESUME)
-const ledgerDir = process.env.FINDJOBS_HARNESS_LEDGER_DIR
+const fieldsPath = fs.realpathSync(harnessConfig.fieldsPath)
+const resumePath = fs.realpathSync(harnessConfig.resumePath)
+const ledgerDir = harnessConfig.ledgerDir
 const generationsDir = path.join(ledgerDir, 'generations')
 const quarantineDir = path.join(ledgerDir, 'quarantine')
 const secretsDir = path.join(ledgerDir, 'secrets')
 const currentPointer = path.join(ledgerDir, 'CURRENT')
 const fakeData = JSON.parse(fs.readFileSync(fieldsPath, 'utf8'))
+const expectedEgoVersion = harnessConfig.expectedEgoVersion
+const expectedSkillVersion = harnessConfig.expectedSkillVersion
+const expectedSkillSha = harnessConfig.expectedSkillSha
+const sourceCommit = harnessConfig.sourceCommit
 
 function assert(condition, message) {
   if (!condition) throw new Error(message)
@@ -1044,12 +1039,12 @@ try {
   result = {
     status: 'passed',
     runtime: {
-      egoLiteVersion: process.env.FINDJOBS_EXPECTED_EGO_VERSION,
-      egoBrowserSkillVersion: process.env.FINDJOBS_EXPECTED_SKILL_VERSION,
-      egoBrowserSkillSha256: process.env.FINDJOBS_EXPECTED_SKILL_SHA,
+      egoLiteVersion: expectedEgoVersion,
+      egoBrowserSkillVersion: expectedSkillVersion,
+      egoBrowserSkillSha256: expectedSkillSha,
     },
     target: {
-      sourceCommit: process.env.FINDJOBS_SOURCE_COMMIT,
+      sourceCommit,
       origin: expectedUrl.origin,
       path: expectedUrl.pathname,
       company: fakeData.job.company,
@@ -1091,6 +1086,7 @@ try {
 if (taskFailure) throw taskFailure
 console.log(JSON.stringify(result, null, 2))
 EOF
+} | "$HARNESS_EGO_BROWSER" nodejs | tee "$HARNESS_RESULT"
 
 stop_server
 trap - EXIT INT TERM

@@ -27,7 +27,7 @@
 
 Codex 每次只会让用户做一个动作。私有产物默认建议放到用户 Documents 目录下的 `FindMyDreamJob-private`，岗位偏好先只问方向、城市、招聘类型和毕业届别，其他条件确实需要时再补充。
 
-首次安装或升级 ego(lite) 后，Codex 当前任务可能仍保留启动时看到的旧 skill。遇到这种情况只需新建一个 Codex 任务并再次粘贴同一条 XHS 短 Prompt；不要混用桌面旧副本和 `/Applications` 中的新版本，也不要让 Codex 自动删除旧应用。
+首次安装或升级 ego(lite) 后，Codex 当前任务可能仍显示启动时看到的旧 skill 元数据。仓库不再把这个缓存本身当作版本锁：先运行 `scripts/resolve-latest-ego-runtime.sh`，从 Citro Labs 官方 GitHub Release 解析最新稳定 skill，并与 `/Applications/AI product Builder/ego.app` 内经过 Apple 签名和公证验证的 skill 逐字比对；通过后完整读取该活动 runtime 的 `SKILL.md` 作为本次调用契约。不要混用 Desktop/下载目录副本，也不要让 Codex 自动删除或结束任何应用。若 onboarding 后仍没有可调用的 `ego-browser` 可执行文件，再新建一个 Codex 任务作为宿主刷新兜底。
 
 > XHS 只投放 GitHub Release 说明中的成品提示词。仓库内无法把“包含自身的 commit hash”写进同一个 commit，因此 [`START_PROMPT.md`](START_PROMPT.md) 只保留占位模板。维护者必须先提交，再把得到的 hash 填入 Release 和 XHS 文案。不要使用会漂移的 main/master/HEAD、分支或可移动 tag 链接。
 
@@ -52,7 +52,7 @@ Codex 每次只会让用户做一个动作。私有产物默认建议放到用�
 
 ego(lite) 是外部桌面依赖。若未安装，Codex 只应引导你打开官方安装页面并等待你完成安装，不应下载来路不明的二进制或修改浏览器登录资料。
 
-浏览器兼容性使用 `config/skills.lock.yaml` 中的受支持运行身份清单。ego(lite) 版本和已加载 `ego-browser` 的版本、日期、SKILL.md SHA256 必须完整匹配清单中的同一组记录；未知、只能部分核对或不匹配的版本停止网页工作，但在宿主文档能力仍可用时可继续离线解析简历和起草材料。更新版本要先审查并加入清单，再随新的固定 commit 发布。
+浏览器兼容性使用 `config/skills.lock.yaml` 中的“官方最新稳定版”解析策略，而不是手工维护的单版本白名单。每次首次网页调用和维护者黄金测试都会运行 `scripts/resolve-latest-ego-runtime.sh`：只接受 Citro Labs GitHub 的最新稳定 Release，核对 GitHub 资产 SHA-256，并要求 `/Applications/AI product Builder/ego.app` 的固定路径、bundle id、Apple Team、designated requirement、Gatekeeper 公证、bundle 当前 runtime 路径以及内置 `SKILL.md` 与 Release 完全一致。任一来源未知、预发布、部分匹配或校验失败都停止网页工作；宿主文档能力仍可信时可继续离线解析和起草。验收报告继续记录实际测试过的精确元组，但不再用它阻止已通过上述检查的官方稳定更新。
 
 ## 四种模式
 

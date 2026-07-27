@@ -10,7 +10,7 @@ A separate read-only Discover run observed ByteDance official posting `A106199`.
 
 - Reviewed ego(lite): `0.4.6.0`.
 - Reviewed `ego-browser`: skill `1.2.5`, dated `2026-07-16`.
-- Executed skill SHA-256: `3d2d43ba61ace9977827f0343d333c597ac6f3d1a0a207a4a62b16468c3292c7`, an exact supported tuple in `config/skills.lock.yaml`.
+- Executed skill SHA-256: `3d2d43ba61ace9977827f0343d333c597ac6f3d1a0a207a4a62b16468c3292c7`, the acceptance-tested tuple recorded in `config/skills.lock.yaml` before the latest-stable resolver replaced the manual runtime allowlist.
 - Browser target: `tests/fixtures/application-form.html`, served only on `127.0.0.1:8765` for the run.
 - Upload: `tests/fixtures/application-fake-resume.txt`, containing synthetic `example.invalid` data.
 - Final passing ego task space: ID `44`; `taskSpaces.complete(..., { keep: false })` returned done and closed it.

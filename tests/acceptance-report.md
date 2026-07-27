@@ -45,7 +45,7 @@ The highest real-site mode is `Draft`, and only after a posting is found inside 
 - Plugin manifest parses and exposes four bundled Markdown skills.
 - The official plugin validator and all four official skill validators pass; their missing local PyYAML dependency was supplied only through a no-install Ruby YAML compatibility shim.
 - The lock file contains nine reviewed candidates with fixed commits and recorded per-file SHA-256 values where audited. No third-party executable dependency is approved for installation.
-- Browser validation used the exact supported tuple ego(lite) `0.4.6.0`, `ego-browser` `1.2.5`, date `2026-07-16`, and SKILL.md SHA-256 `3d2d43ba61ace9977827f0343d333c597ac6f3d1a0a207a4a62b16468c3292c7`.
+- Browser validation used the exact acceptance-tested tuple ego(lite) `0.4.6.0`, `ego-browser` `1.2.5`, date `2026-07-16`, and SKILL.md SHA-256 `3d2d43ba61ace9977827f0343d333c597ac6f3d1a0a207a4a62b16468c3292c7`. Runtime admission now resolves the official latest stable Release dynamically; this line records evidence rather than a manual allowlist.
 - G0 documents the threat model, exact query scopes, unknown/variable terms risk and fail-closed re-review triggers in `g0-threat-model.md`; it does not claim blanket site permission.
 - The PDF/DOCX resume-to-profile-to-match-to-material path passed deterministic build, parse/readback, render, contact-isolation, truthfulness and layout gates. See `golden-resume-report.md`.
 - ByteDance daily-internship discovery passed a native list plus visible official detail check for posting `A106199`. Tencent campus-full-time exact-query semantics passed with a verified zero-result response. These are narrow adapter scopes, not whole-site approval.

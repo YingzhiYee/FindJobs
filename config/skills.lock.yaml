@@ -16,12 +16,30 @@ runtimeDependencies:
   - id: ego-browser
     distribution: ego-lite-official
     officialInstallDocs: https://lite.ego.app/document/zh/docs/quick-start
-    status: runtime-reviewed
+    status: runtime-latest-stable
     identityPolicy:
-      match: exact-supported-tuple
+      match: latest-official-stable-signed-runtime
       unknownOrPartial: stop-browser-work-and-continue-offline-only
-      update: review-then-add-a-new-tuple-in-a-pinned-release
-    supportedRuntimeIdentities:
+      update: resolve-official-latest-at-runtime
+    latestStableRuntime:
+      resolver: scripts/resolve-latest-ego-runtime.sh
+      appBundlePath: /Applications/AI product Builder/ego.app
+      executablePath: /Applications/AI product Builder/ego.app/Contents/MacOS/ego
+      bundleIdentifier: com.citrolabs.ego
+      teamIdentifier: JGQLC6YQYJ
+      designatedRequirement: 'identifier "com.citrolabs.ego" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = JGQLC6YQYJ'
+      appUpdateURL: https://update.citrolabs.ai/service/update2
+      skillLatestRelease: https://github.com/citrolabs/ego-lite/releases/latest
+      skillReleaseAsset: ego-browser-v<stable-version>.zip
+      requiredChecks:
+        - exact-app-path
+        - active-runtime-inside-app-bundle
+        - apple-team-and-designated-requirement
+        - gatekeeper-notarized-developer-id
+        - stable-github-release-only
+        - github-asset-sha256
+        - bundled-skill-exact-release-match
+    testedRuntimeIdentities:
       - appBundlePath: /Applications/AI product Builder/ego.app
         executablePath: /Applications/AI product Builder/ego.app/Contents/MacOS/ego
         bundleIdentifier: com.citrolabs.ego
@@ -38,7 +56,7 @@ runtimeDependencies:
         skillDate: "2026-07-16"
         skillSha256: 3d2d43ba61ace9977827f0343d333c597ac6f3d1a0a207a4a62b16468c3292c7
         reviewedAt: "2026-07-27"
-        status: supported
+        status: acceptance-tested
 
 skills:
   - id: resume-skills-jd-tailor

@@ -35,17 +35,16 @@
 
 1. 仅支持 macOS 黄金路径。若当前没有可调用的 `ego-browser`，打开 ego(lite) [官方快速开始页面](https://lite.ego.app/document/zh/docs/quick-start)，指导用户从官方渠道安装；不从镜像、网盘或陌生脚本下载应用。
 2. 安装页面打开后暂停，清楚告诉用户需要在 ego(lite) 图形界面中：完成首次 onboarding、按需导入 Chrome 数据。Codex 不代替用户操作这个 GUI，也不读取、导出或要求用户粘贴密码、Cookie、Token、验证码。
-3. 等用户明确回复“已完成 ego(lite) 引导”后再继续。未收到回复时不要循环探测或假设安装完成。若发现多个 ego(lite)/ego 副本或旧版本，要求用户亲自退出所有非放行副本，并从 `config/skills.lock.yaml` 当前受支持元组的 `appBundlePath` 启动官方版本；不要自动终止进程，也不要删除、移动或覆盖任何应用。
-4. Codex 任务可能在启动时缓存可用 skill。安装或升级后，如果当前任务仍看不到 `ego-browser` 或仍报告旧元组，告诉用户新建一个 Codex 任务并原样再粘贴同一条 XHS 短 Prompt；这是安装后的唯一重启步骤，不要求重新填写任何求职信息。旧任务停止网页工作，不要靠读取另一个 app bundle 拼出“已加载”的新身份。
+3. 等用户明确回复“已完成 ego(lite) 引导”后再继续。未收到回复时不要循环探测或假设安装完成。若发现多个 ego(lite)/ego 主进程，要求用户亲自退出所有不在 `/Applications/AI product Builder/ego.app` 的副本并启动该固定路径；不要自动终止任何进程，也不要删除、移动或覆盖任何应用。
+4. Codex 任务可能在启动时缓存旧 skill 元数据。不要仅因缓存版本较旧就要求重开任务；先执行下一步的官方最新稳定版解析器。解析通过后，完整读取解析器报告的活动 runtime `SKILL.md` 并按其语法调用。只能读取解析器已经验证的 `/Applications` 活动 runtime，不能从 Desktop、下载目录或另一个 bundle 拼接身份。只有 onboarding 后 `ego-browser` 可执行文件仍不可用时，才让用户新建一个 Codex 任务并原样粘贴同一条 Prompt 以刷新宿主工具发现。
 5. 询问本次允许访问的招聘网站。请用户亲自在 ego(lite) 中完成这些站点的登录以及验证码/二次验证，然后暂停；只有用户明确回复“登录完成，可以继续”后才重新取得浏览器控制。若用户在任何时刻接管 task space，必须等待新的明确继续指令，不得自动夺回。
-6. 在首次调用 `ego-browser` 前，对 `config/skills.lock.yaml` 的一个 `supportedRuntimeIdentities` 元组执行完整、只读的运行时身份检查：
-   - 磁盘 app 的规范化路径必须与 `appBundlePath` 完全一致，且 `executablePath` 必须位于该 bundle 内；路径不存在、经符号链接解析后不同或只能找到其他副本时停止。
-   - 从该 bundle 的 `Info.plist` 读取 bundle id、短版本和 build 版本，分别精确匹配 `bundleIdentifier`、`egoLiteVersion`、`bundleVersion`。
-   - 使用 macOS 系统签名工具做常规磁盘签名校验；结果必须为磁盘签名有效且满足 designated requirement，对应 `codesignVerification`。读取 TeamIdentifier、designated requirement 和完整 64 位 CandidateCDHashFull SHA-256，分别精确匹配 `teamIdentifier`、`designatedRequirement`、`codeDirectorySha256`；再计算主可执行文件 SHA-256 并匹配 `executableSha256`。Gatekeeper 执行评估的结果与来源还必须分别匹配 `gatekeeperResult`、`gatekeeperSource`。不导出或展示签名证书。
+6. 在首次调用 `ego-browser` 前运行 `./scripts/resolve-latest-ego-runtime.sh`。它必须从 Citro Labs 官方 GitHub Releases 的 `/latest` 重定向解析非预发布语义版本，读取官方资产 SHA-256，下载但不执行 `ego-browser-v<version>.zip`，然后执行完整、只读的运行时身份检查：
+   - 固定 `/Applications/AI product Builder/ego.app`，从 `Info.plist` 读取 bundle id、短版本、build 版本、KSProductID、KSVersion 和 KSUpdateURL；更新源必须仍是 Citro Labs 官方地址，活动 runtime 必须位于同一 bundle 且版本一致。
+   - 使用 macOS 系统签名工具核对固定 Apple Team、完整 code-directory SHA-256、designated requirement、可执行文件 SHA-256、valid-on-disk 和 notarized Developer ID。不导出或展示签名证书。
    - 只读枚举当前正在运行的 ego/ego(lite) 主进程。至少一个主进程的实际可执行路径必须与 `executablePath` 完全一致；若存在从 Desktop、下载目录或其他路径运行的主进程，要求用户亲自退出它并启动放行路径，随后重新检查。不要自动结束任何进程。
-   - 核对当前 Codex 任务实际加载的 `ego-browser` skill 版本、日期和 SKILL.md SHA256，分别匹配同一元组的 `skillVersion`、`skillDate`、`skillSha256`。磁盘上另一个 skill 文件不能代表当前任务已加载它。
-   以上字段必须同时匹配同一个元组，不得跨 app 副本、进程、skill 或元组拼接。任何字段未知、只能部分观察、签名/公证校验失败或不匹配时，停止所有网页任务，简短说明差异；仍可继续已放行的离线解析/起草。
-7. 身份完整匹配后，按当前已加载 `ego-browser` skill 的语法执行一个最小 runtime 调用，并要求输出可核对的 ready 结果。冒烟失败时按官方安装排障；冒烟成功不替代第 6 步的身份校验。后续网页任务复用同一个目标明确的 task space。
+   - 官方 Release 资产中的 `SKILL.md` 与活动 runtime 内置文件的版本、日期和 SHA-256 必须逐字一致。当前任务显示的旧缓存只用于识别宿主可能陈旧，不再覆盖这个官方稳定版解析结果。
+   任一字段未知、预发布、命令失败、只能部分匹配或来源跳转到其他仓库时停止所有网页任务，简短说明差异；仍可继续已放行的离线解析/起草。
+7. 解析器输出 `status: ready` 后，完整读取它给出的 runtime `SKILL.md`，按该语法执行一个最小 runtime 调用并输出可核对的 ready 结果。冒烟失败时按官方安装排障；冒烟成功不替代第 6 步的签名、Release 与内容校验。后续网页任务复用同一个目标明确的 task space。
 
 ### 3. 建立私有工作区并解析简历
 

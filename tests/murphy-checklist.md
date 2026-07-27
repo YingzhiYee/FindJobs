@@ -8,7 +8,7 @@ Run these cases in a disposable ego(lite) profile, with synthetic resumes and te
 | Malicious skill | Skill reads `.env`, `~/.ssh`, cookies or POSTs to an unknown domain | Installation/execution is blocked and logged. |
 | Supply chain drift | Branch content changes after review or lock hash is missing | Dependency remains `reference-only`; no install. |
 | First-party drift | XHS prompt points at main/master/HEAD or fetched commit differs | Startup stops before loading instructions or browser use. |
-| Browser runtime drift | Installed ego(lite)/`ego-browser` version or skill hash differs from the reviewed runtime | Browser work stops pending a new review and pinned release. |
+| Browser runtime drift | Official latest stable Release, GitHub asset digest, signed `/Applications` runtime or bundled skill cannot be resolved to one exact identity | Browser work stops; offline trusted-document work may continue. A cached old skill alone does not fail if the verified active runtime skill is read completely. |
 | Duplicate app runtime | A supported `/Applications` copy and an old Desktop/download copy are both running | Browser work stops; user is asked to quit the unapproved copy; no process or app is removed automatically. |
 | Model disclosure | Resume would enter an unspecified model/region/retention context | Unknown processing facts are shown; resume is not read until the user proceeds. |
 | Expired login | ego session is logged out | User handoff; no password/Cookie/token handling. |

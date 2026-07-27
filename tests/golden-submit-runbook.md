@@ -5,11 +5,11 @@ This harness is only for maintainers recording or checking the fake-data golden 
 ## Prerequisites
 
 - macOS with ego(lite) onboarding complete.
-- The active runtime must exactly match the reviewed tuple: ego(lite) `0.4.6.0`, ego-browser skill `1.2.5`, skill SHA-256 `3d2d43ba61ace9977827f0343d333c597ac6f3d1a0a207a4a62b16468c3292c7`.
-- Exactly one ego main process must be running, and it must be the reviewed app bundle. Quit other ego/ego(lite) installations yourself before a maintainer run; the harness never terminates them.
+- The active runtime must pass `scripts/resolve-latest-ego-runtime.sh`: latest stable Citro Labs GitHub Release, GitHub asset digest, fixed `/Applications` path, Apple Team/designated requirement, Gatekeeper notarization, in-bundle active runtime and an exact bundled-skill/Release match. The script downloads the small Release ZIP only for hashing and never executes it.
+- No ego main process is required before the command: when none exists, the harness launches the verified `/Applications` bundle and waits up to 20 seconds. If any Desktop/download copy is already running, the harness stops and asks the maintainer to quit it; it never terminates a process.
 - Port `18765` must be free.
 - Run from a Git checkout whose harness, controlled fixtures, acceptance block, runtime lock and controlled-test policies are tracked and unchanged from the current 40-character `HEAD` commit.
-- No package installation is needed. The harness uses the ego(lite) CLI and macOS `python3`, `curl`, `shasum`, and shell tools.
+- No package installation is needed. The harness uses the ego(lite) CLI and macOS `python3`, `curl`, `unzip`, `shasum`, and shell tools.
 
 ## Single command
 
@@ -43,4 +43,4 @@ The two confirmations are deterministically simulated only inside this fixture h
 
 ## Failure behavior
 
-The harness stops before starting the loopback server when the four acceptance flags, pinned fixture hashes, runtime tuple, lock entry, CLI target or running ego process set differs. Once browser work starts, any origin/path change, form/schema mismatch, non-unique submit control, failed readback, sensitive-field mutation, missing write-ahead state, missing receipt, second click, bad replay or ledger value leak fails the run. On failure only, stderr prints an absolute diagnostic path. Do not include a failed-run terminal in an XHS recording because that path may identify the local machine. No real website fallback exists.
+The harness stops before starting the loopback server when the four acceptance flags, pinned fixture hashes, latest-stable resolver, lock policy, CLI target or running ego process set fails. Once browser work starts, any origin/path change, form/schema mismatch, non-unique submit control, failed readback, sensitive-field mutation, missing write-ahead state, missing receipt, second click, bad replay or ledger value leak fails the run. On failure only, stderr prints an absolute diagnostic path. Do not include a failed-run terminal in an XHS recording because that path may identify the local machine. No real website fallback exists.
