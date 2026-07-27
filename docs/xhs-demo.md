@@ -38,4 +38,4 @@ Prepare the synthetic resume outside the public repository. Keep the desktop, br
 
 ## Publication gate
 
-Before recording, publish the reviewed commit, generate the concrete fixed-commit prompt in its GitHub Release, add the project license, and complete G3. G7 passes only after the finished video is reviewed frame by frame for personal data and overclaiming.
+Before recording, publish the reviewed commit, generate the concrete fixed-commit prompt in its GitHub Release, and complete G3. G7 passes only after the finished video is reviewed frame by frame for personal data and overclaiming.

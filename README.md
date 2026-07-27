@@ -72,6 +72,10 @@ ego(lite) 是外部桌面依赖。若未安装，Codex 只应引导你打开官�
 
 引入任何外部 skill 前，请核对其许可证和再分发条件，并在 `THIRD_PARTY_NOTICES.md` 中保留原项目地址、版本、许可证和修改说明。许可证不清晰、来源不可信或行为超出求职流程所需范围的项目不纳入默认包。
 
+## License
+
+本项目采用 [MIT License](LICENSE)。第三方项目仍分别受其原许可证约束，具体审计来源和使用方式见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
+
 ## 当前限制
 
 网站字段、登录状态和反自动化策略会变化；岗位信息可能过期或重复；生成的材料必须由用户自行核验。这个项目的目标是减少重复操作和提高复核效率，不承诺自动获得面试或绕过任何平台规则。
@@ -79,5 +83,4 @@ ego(lite) 是外部桌面依赖。若未安装，Codex 只应引导你打开官�
 ## 发布前未决项
 
 - 从 `START_PROMPT.md` 模板生成带完整 commit 地址的 GitHub Release 说明，并用 release tag 固定首个可演示版本。
-- 由仓库所有者选择并添加本项目许可证；在此之前，不在 plugin manifest 中声明许可证。
 - 完成 `tests/acceptance-report.md` 所列的 ego(lite) 动态门槛后，再宣传填写或投递闭环；未完成时只演示 Discover/Draft 和测试表单。

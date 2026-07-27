@@ -23,7 +23,7 @@
 
 ## Still required before public launch
 
-- Generate a fixed-commit prompt in a GitHub Release, add an owner-selected project license, and publish the reviewed repository contents.
+- Generate a fixed-commit prompt in a GitHub Release and publish the reviewed repository contents.
 - `G3`: ego read-only search on synthetic accounts/sites, including injection, redirects, rate limits and duplicate jobs.
 - `G4`: Fill-mode test on a controlled form that proves no field or upload occurs before disclosure consent and no final click occurs.
 - `G5`: one manually selected real application with both confirmation records, single-use attempt ID and verified outcome.

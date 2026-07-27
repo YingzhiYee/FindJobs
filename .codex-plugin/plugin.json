@@ -2,6 +2,9 @@
   "name": "find-my-dream-job",
   "version": "0.3.4",
   "description": "Safe job discovery and truthful application drafting, with test-only consent gates for future ego-browser filling and submission.",
+  "homepage": "https://github.com/YingzhiYee/FindJobs",
+  "repository": "https://github.com/YingzhiYee/FindJobs",
+  "license": "MIT",
   "author": {
     "name": "YingzhiYee"
   },
