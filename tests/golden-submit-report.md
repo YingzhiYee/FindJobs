@@ -8,21 +8,21 @@ A separate read-only Discover run observed ByteDance official posting `A106199`.
 
 ## Runtime and fixture
 
-- Reviewed ego(lite): `0.4.6.0`.
+- Reviewed ego(lite): `0.4.6.1`.
 - Reviewed `ego-browser`: skill `1.2.5`, dated `2026-07-16`.
 - Executed skill SHA-256: `3d2d43ba61ace9977827f0343d333c597ac6f3d1a0a207a4a62b16468c3292c7`. The latest-stable resolver independently matched it to Citro Labs GitHub Release `v1.2.5`, verified the Release asset SHA-256, and validated the signed/notarized `/Applications` app.
 - Browser target: `tests/fixtures/application-form.html`, served only on `127.0.0.1:18765` for the run.
 - Upload: `tests/fixtures/application-fake-resume.txt`, containing synthetic `example.invalid` data.
-- Final passing ego task space for this run: ID `1`; `taskSpaces.complete(..., { keep: false })` returned done and closed it.
+- Final passing ego task space for this run: ID `26`; `taskSpaces.complete(..., { keep: false })` returned done and closed it.
 - Durable test ledger: 23 hash-chained NDJSON events in a private system temporary directory. Every append was followed by file `fsync`, readback and full replay validation before the allowed click.
 
 The passing result reported `realEmployerTouched: false`, receipt `FIXTURE-001`, submit count `1`, two HMAC sidecars, a replay state of `submitted`, a recovered `generation-000002.ndjson`, and a retry fixture with authoritative `not_submitted`, submit count `0`, no receipt and no second click.
 
 ## Reproducible harness rerun
 
-`./tests/run-golden-submit.sh` packages the controlled route as a no-argument maintainer command on fixed `127.0.0.1:18765`. Bash syntax, embedded JavaScript execution, pinned fixture hashes, latest-stable runtime resolution and the scoped diff check passed from source commit `b134c3d426895e817933ba0b10e01e5b5f2c25c6`.
+`./tests/run-golden-submit.sh` packages the controlled route as a no-argument maintainer command on fixed `127.0.0.1:18765`. Bash syntax, embedded JavaScript execution, pinned fixture hashes, latest-stable runtime resolution and the scoped diff check passed from source commit `e2d7cbd456be9ea710ea94ac735675464127e076`.
 
-The resolver used the fixed `/Applications/AI product Builder/ego.app`, ignored the stale onboarding symlink, downloaded the official stable skill ZIP only for hashing, and executed the CLI directly from the verified app runtime. The harness started the verified app because no ego main process was running. It did not terminate a process or use the Desktop copy.
+The resolver used the fixed `/Applications/AI product Builder/ego.app`, ignored the stale onboarding symlink, downloaded the official stable skill ZIP only for hashing, and executed the CLI directly from the verified app runtime. Before the passing rerun, the maintainer closed a user-confirmed legacy Desktop process that had survived a normal quit; the harness itself neither terminated a process nor used the Desktop copy. Exactly one verified `/Applications` main process was running when the fixture server started.
 
 The loopback server stopped after success, and the task space was closed. No real employer, ATS, posting application URL or real candidate data entered the controlled route.
 

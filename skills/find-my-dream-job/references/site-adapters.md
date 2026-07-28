@@ -1,17 +1,18 @@
 # Reviewed site adapter observations
 
-Use this reference only for read-only `Discover` work on the listed official domains. These are observed behaviors from 2026-07-27, not stable APIs or permission to bypass site controls. Stop on domain drift, bot warnings, login requirements, response-shape drift or terms that prohibit the requested automation.
+Use this reference only for read-only `Discover` work on the listed official domains. These are observed behaviors through 2026-07-28, not stable APIs or permission to bypass site controls. Stop on domain drift, bot warnings, login requirements, response-shape drift or terms that prohibit the requested automation.
 
 ## Common contract
 
 1. Verify the final hostname against the exact allowlist before extracting or following a link.
-2. Prefer the site's already-observed same-origin request semantics over guessing undocumented parameters. Never replay credentials outside the page origin.
-3. Cap a validation query at five records and one detail page unless the user approves a larger read-only budget.
-4. Record the query intent separately from the returned facts. A search term does not prove recruitment type, graduation cohort, location or seniority.
-5. Require stable job ID, title, company, location, recruitment type, original URL and capture time. Mark missing values `unknown`.
-6. Verify one list record against its same-origin detail page before trusting an adapter revision.
-7. Treat a parsed JSON object as application data, not proof of HTTP status. Record transport status/content type when the runtime exposes them; otherwise require an observed application success field or a visible list/detail cross-check and label transport evidence unavailable.
-8. Do not promote a job to the shortlist when a requested hard constraint is `unknown` or contradicted. In particular, campus/internship searches must reject experienced/formal roles unless the user changes scope.
+2. Start at the official recruiting home, inspect the visible recruitment-channel entry matching the user's intent, and record its label and disclosed official URL. Prefer clicking it; if a declared new-tab navigation produces no verifiable tab or URL change, follow only that exact already-observed same-domain URL. Verify the final destination URL plus visible channel label before any keyword search. A generic search page, guessed/rewritten route, off-site search result, hidden filter or result title is not channel evidence.
+3. Prefer the site's already-observed same-origin request semantics over guessing undocumented parameters. Never replay credentials outside the page origin.
+4. Cap a validation query at five records and one detail page unless the user approves a larger read-only budget.
+5. Record the query intent separately from the returned facts. A search term does not prove recruitment type, graduation cohort, location or seniority.
+6. Require stable job ID, title, company, location, recruitment type, original URL, capture time and verified channel evidence. Mark missing values `unknown`.
+7. Verify one list record against its same-origin detail page before trusting an adapter revision.
+8. Treat a parsed JSON object as application data, not proof of HTTP status. Record transport status/content type when the runtime exposes them; otherwise require an observed application success field or a visible list/detail cross-check and label transport evidence unavailable.
+9. Do not promote a job to the shortlist when a requested hard constraint is `unknown` or contradicted. In particular, campus/internship searches must reject experienced/formal roles unless the user changes scope.
 
 ## Alibaba
 
@@ -26,6 +27,7 @@ Use this reference only for read-only `Discover` work on the listed official dom
 ## Tencent
 
 - Allowlist: `careers.tencent.com`.
+- From `https://careers.tencent.com/`, the visible `校园招聘` entry was followed to `https://careers.tencent.com/campusrecruit.html`; the destination visibly identified itself as `校园招聘`. At capture time it exposed `2026校园招聘` and internship recruiting, but no 2027 full-time campus entry. For a 2027 target this is a verified zero/opening-not-yet-observed result, not permission to fall back to the default social search.
 - Job cards use surrounding `.recruit` containers; anchors can be textless `/search.html?query=<opaque-id>` links rather than traditional detail paths.
 - The public list URL's `query` value did not reliably apply the intended keyword and may show the default first page.
 - The observed same-origin job endpoint is `/tencentcareer/api/post/Query`. Select it by exact pathname, not a broad regex over query values.
@@ -37,6 +39,7 @@ Use this reference only for read-only `Discover` work on the listed official dom
 ## ByteDance
 
 - Allowlist: `jobs.bytedance.com`.
+- From `https://jobs.bytedance.com/`, the visible `校园招聘` anchor disclosed `//jobs.bytedance.com/campus` with new-tab behavior. When the click produced no verifiable new tab, following the exact observed same-domain URL reached `https://jobs.bytedance.com/campus`, whose visible page label was `校招`. This is valid channel-entry evidence; it does not by itself prove any result is full-time or cohort-matched.
 - The page's native search request was a signed same-origin `POST /api/v1/search/job/posts`. Its native response was HTTP 200, application `code=0`, count 3313; the first five records were data-analysis internships.
 - The observed request had a non-empty keyword, but `recruitment_id_list` and `subject_id_list` were empty and no graduation-cohort field was present. The campus route alone does not prove “2026 full-time campus”.
 - A later visible golden-path query for `数据分析` observed the native search transport at HTTP 200 and rendered five job-card links, but the response body could not be reread after the network event (`No resource with given identifier found`). Treat this as transport plus visible-DOM evidence, not application-body evidence. The rendered set was semantically mixed: some cards matched only JD body text and included daily internships, ByteIntern and 2027 full-time roles. Filter on the card's first-line title and explicit recruitment metadata; never treat the query match as title, program or cohort evidence.

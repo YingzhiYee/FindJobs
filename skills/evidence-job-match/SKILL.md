@@ -32,6 +32,7 @@ Every job requirement needs a bounded JD evidence reference containing the sourc
 - Any `unknown` hard constraint that could change eligibility makes the decision `needs_user_input`, regardless of score.
 - A profile conflict affecting a hard constraint also makes the decision `needs_user_input` until the user resolves it.
 - `unknown` recruitment type/cohort is not silently accepted into a campus or internship shortlist.
+- For an autumn/spring/campus target, only a cohort-matched full-time campus posting can enter the primary shortlist. Every internship subtype is `reject` for that target. A formal/experienced posting may appear only as a separately labeled secondary option after its experience-duration requirements are demonstrated; it never counts as a campus match.
 
 ## Explainable score
 
