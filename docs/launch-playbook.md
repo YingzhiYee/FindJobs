@@ -95,7 +95,7 @@ Keep cuts fast, captions large and terminal output cropped to only the proof lin
 After the final release commit exists, replace `<FINAL_COMMIT>` and publish exactly one copyable block:
 
 ```text
-请按这个固定版本协助我完成一次求职：https://github.com/YingzhiYee/FindJobs/tree/<FINAL_COMMIT>。先只读核对该 commit，并严格执行其中的 START_PROMPT.md；从指导我安装并完成 ego(lite) 图形界面引导开始，每次只处理一个岗位，填写和提交必须分别等我明确确认，验收未放行的真实操作必须停止。
+请按这个固定版本协助我完成一次求职：〔从 GitHub Release 原样复制的固定 commit URL〕。先只读核对该 commit，并严格执行其中的 START_PROMPT.md；从指导我安装并完成 ego(lite) 图形界面引导开始，每次只处理一个岗位，填写和提交必须分别等我明确确认，验收未放行的真实操作必须停止。
 ```
 
 If XHS suppresses a comment containing a URL, put the repository name in the pinned comment and the full Prompt in the post text or final image. Do not use link shorteners because they break the fixed-commit trust check.

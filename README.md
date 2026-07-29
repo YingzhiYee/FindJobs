@@ -34,7 +34,7 @@ Codex 每次只会让用户做一个动作。私有产物默认建议放到用�
 成品提示词应尽量短，形式如下：
 
 ```text
-请按这个固定版本协助我完成一次求职：https://github.com/YingzhiYee/FindJobs/tree/<40位commit>。先只读核对该 commit，并严格执行其中的 START_PROMPT.md；从指导我安装并完成 ego(lite) 图形界面引导开始，每次只处理一个岗位，填写和提交必须分别等我明确确认，验收未放行的真实操作必须停止。
+请按这个固定版本协助我完成一次求职：〔从 GitHub Release 原样复制的固定 commit URL〕。先只读核对该 commit，并严格执行其中的 START_PROMPT.md；从指导我安装并完成 ego(lite) 图形界面引导开始，每次只处理一个岗位，填写和提交必须分别等我明确确认，验收未放行的真实操作必须停止。
 ```
 
 完整流程和录屏完成标准见 [`docs/golden-path.md`](docs/golden-path.md)。

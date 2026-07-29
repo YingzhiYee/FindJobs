@@ -5,7 +5,7 @@
 维护者先创建候选 release commit，再把下面的占位符替换为该 commit 的完整 40 位 hash。仓库文件无法预先包含“包含它自身的 commit hash”，所以不要把占位符提交后的文件当作 XHS 成品，也不要改用 main、master、HEAD、分支或可移动 tag。
 
 ```text
-请按这个固定版本协助我完成一次求职：<替换为 https://github.com/YingzhiYee/FindJobs/tree/40位commit>。先只读核对该 commit，并严格执行其中的 START_PROMPT.md；从指导我安装并完成 ego(lite) 图形界面引导开始，每次只处理一个岗位，填写和提交必须分别等我明确确认，验收未放行的真实操作必须停止。
+请按这个固定版本协助我完成一次求职：〔替换为 GitHub Release 中的固定 commit URL〕。先只读核对该 commit，并严格执行其中的 START_PROMPT.md；从指导我安装并完成 ego(lite) 图形界面引导开始，每次只处理一个岗位，填写和提交必须分别等我明确确认，验收未放行的真实操作必须停止。
 ```
 
 发布后，XHS 用户只需要复制上面替换完成的一段话。以下内容是 Codex 从固定 commit 加载本文件后必须执行的完整协议，不需要用户再次复制。
@@ -14,7 +14,7 @@
 
 ### 1. 锁定来源和能力边界
 
-1. 从用户消息中取得 `https://github.com/YingzhiYee/FindJobs/tree/<40位commit>`，确认仓库名完全匹配且 URL 包含完整 40 位十六进制 commit。URL 为 main、master、HEAD、分支、短 hash、仅 tag 或无法核对的重定向时停止，请用户提供 GitHub Release 中的固定 commit 版本。
+1. 从用户消息中取得 GitHub Release 提供的固定 commit URL；它必须由仓库路径 `YingzhiYee/FindJobs/tree/` 后接完整 40 位十六进制 commit。确认仓库名完全匹配；URL 为 main、master、HEAD、分支、短 hash、仅 tag 或无法核对的重定向时停止，请用户提供 GitHub Release 中的固定 commit 版本。
 2. 若当前目录不是该仓库的同一 commit，不要求用户先手动下载或执行命令。Codex 在 owner-only 系统临时目录中只从 `https://github.com/YingzhiYee/FindJobs.git` 初始化临时 checkout，按完整 hash 获取该对象并 detached checkout；随后要求 `git rev-parse HEAD` 与 Prompt 中 40 位 hash 逐字一致，且 `git remote get-url origin` 仍是上述官方仓库。禁止改用默认分支、最新 tag、fork、镜像、压缩包或搜索结果。获取失败、对象不可达、remote/commit 不一致时停止，不执行任何仓库文件。
 3. 只读加载同一 commit 的 `README.md`、`START_PROMPT.md`、`policies/`、`config/skills.lock.yaml`、`tests/acceptance-report.md`、`tests/murphy-checklist.md`、`docs/golden-path.md`，以及以下四个 bundled skill：
    - `skills/find-my-dream-job/SKILL.md`

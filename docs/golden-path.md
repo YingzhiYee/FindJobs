@@ -7,7 +7,7 @@ The target public promise is deliberately narrow: one macOS user can move from a
 The XHS post contains one short bootstrap prompt generated after the release commit exists. It points to an immutable URL of the form:
 
 ```text
-https://github.com/YingzhiYee/FindJobs/tree/<40-character-commit>
+<fixed 40-character commit URL copied from the GitHub Release>
 ```
 
 The commit cannot be embedded into the same commit's tracked `START_PROMPT.md`; doing so would be self-referential. The maintainer therefore commits first, then substitutes the resulting 40-character commit in the GitHub Release description and XHS copy. Never publish a `main`, `master`, `HEAD`, branch, or mutable tag URL as the bootstrap source.
