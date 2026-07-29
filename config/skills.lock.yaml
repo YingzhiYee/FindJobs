@@ -23,6 +23,7 @@ runtimeDependencies:
       update: resolve-official-latest-at-runtime
     latestStableRuntime:
       resolver: scripts/resolve-latest-ego-runtime.sh
+      runner: scripts/run-verified-ego-browser.sh
       appBundlePath: /Applications/AI product Builder/ego.app
       executablePath: /Applications/AI product Builder/ego.app/Contents/MacOS/ego
       bundleIdentifier: com.citrolabs.ego
@@ -39,6 +40,8 @@ runtimeDependencies:
         - stable-github-release-only
         - github-asset-sha256
         - bundled-skill-exact-release-match
+        - verified-cli-path-ignores-shell-activation-links
+        - exactly-one-trusted-main-process-before-browser-work
     testedRuntimeIdentities:
       - appBundlePath: /Applications/AI product Builder/ego.app
         executablePath: /Applications/AI product Builder/ego.app/Contents/MacOS/ego

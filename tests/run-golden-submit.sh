@@ -6,7 +6,7 @@ EXPECTED_APP_EXECUTABLE="/Applications/AI product Builder/ego.app/Contents/MacOS
 EXPECTED_BUNDLE_IDENTIFIER="com.citrolabs.ego"
 EXPECTED_TEAM_IDENTIFIER="JGQLC6YQYJ"
 EXPECTED_DESIGNATED_REQUIREMENT='identifier "com.citrolabs.ego" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = JGQLC6YQYJ'
-EXPECTED_RELEASE="0.4.0-beta.1"
+EXPECTED_RELEASE="0.4.0-beta.2"
 EXPECTED_FORM_SHA256="c6274b6b8ad23e07f8ce375ab15620dcf7312afd2bbe97668cd4ba16892ef237"
 EXPECTED_FIELDS_SHA256="715dd35a13276af55b6a9f178378876e8a3c5929568912be145ad9e9e1e4b2da"
 EXPECTED_RESUME_SHA256="7757555e6d835dd0636ec4064fbecdef881a65e4ab3209ccd670f02d483c3f0e"

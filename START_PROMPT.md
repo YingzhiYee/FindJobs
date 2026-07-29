@@ -14,22 +14,23 @@
 
 ### 1. 锁定来源和能力边界
 
-1. 从用户消息中取得 `https://github.com/YingzhiYee/FindJobs/tree/<40位commit>`，确认它包含完整 40 位 commit，并核对实际读取的 commit 完全一致。URL 为 main、master、HEAD、分支、短 hash、仅 tag 或无法核对的重定向时停止，请用户提供 GitHub Release 中的固定 commit 版本。
-2. 只读加载同一 commit 的 `README.md`、`START_PROMPT.md`、`policies/`、`config/skills.lock.yaml`、`tests/acceptance-report.md`、`tests/murphy-checklist.md`、`docs/golden-path.md`，以及以下四个 bundled skill：
+1. 从用户消息中取得 `https://github.com/YingzhiYee/FindJobs/tree/<40位commit>`，确认仓库名完全匹配且 URL 包含完整 40 位十六进制 commit。URL 为 main、master、HEAD、分支、短 hash、仅 tag 或无法核对的重定向时停止，请用户提供 GitHub Release 中的固定 commit 版本。
+2. 若当前目录不是该仓库的同一 commit，不要求用户先手动下载或执行命令。Codex 在 owner-only 系统临时目录中只从 `https://github.com/YingzhiYee/FindJobs.git` 初始化临时 checkout，按完整 hash 获取该对象并 detached checkout；随后要求 `git rev-parse HEAD` 与 Prompt 中 40 位 hash 逐字一致，且 `git remote get-url origin` 仍是上述官方仓库。禁止改用默认分支、最新 tag、fork、镜像、压缩包或搜索结果。获取失败、对象不可达、remote/commit 不一致时停止，不执行任何仓库文件。
+3. 只读加载同一 commit 的 `README.md`、`START_PROMPT.md`、`policies/`、`config/skills.lock.yaml`、`tests/acceptance-report.md`、`tests/murphy-checklist.md`、`docs/golden-path.md`，以及以下四个 bundled skill：
    - `skills/find-my-dream-job/SKILL.md`
    - `skills/resume-evidence-profile/SKILL.md`
    - `skills/evidence-job-match/SKILL.md`
    - `skills/truthful-application-materials/SKILL.md`
-3. 不执行仓库脚本，不安装 lock 中的第三方候选，不因缺少文件而猜测行为。读取仓库不等于授权安装依赖、上传简历、填写表单或提交申请。
-4. 读取 `tests/acceptance-report.md` 的 `Authoritative release status` YAML 块，先逐项报告这个固定版本允许的能力。必须使用其中的精确布尔值和 `realDiscoverScopes`，不能根据代码存在、相似站点、冒烟成功或用户催促推断放行：
+4. 除只读的 `scripts/resolve-latest-ego-runtime.sh` 和只执行该解析结果的 `scripts/run-verified-ego-browser.sh` 外，不执行仓库脚本，不安装 lock 中的第三方候选，不因缺少文件而猜测行为。临时 checkout 和读取仓库不等于授权安装依赖、上传简历、填写表单或提交申请。
+5. 读取 `tests/acceptance-report.md` 的 `Authoritative release status` YAML 块，先逐项报告这个固定版本允许的能力。必须使用其中的精确布尔值和 `realDiscoverScopes`，不能根据代码存在、相似站点、冒烟成功或用户催促推断放行：
    - `offlineResumeEnabled` 或 `localDraftEnabled` 不是 `true`：对应离线能力停止。`trustedDocumentCapabilityRequired` 是 `true` 时，还必须确认当前 Codex 宿主已有受信任的 PDF/DOCX 能力；缺失时停止解析和导出。
    - `realDiscoverEnabled` 不是 `true`，或本次请求没有完整匹配某个 `realDiscoverScopes` 条目的全部字段：不访问该真实招聘范围。至少精确匹配 `site`、`recruitmentType`、`query`；条目存在 `siteProgram` 或其他限定字段时也必须逐项精确匹配。字段缺失、近义词、扩大关键词、不同专项计划或不同招聘类型均不算匹配。
    - 报告未明确放行真实 Fill：不得在真实招聘方/ATS 页面填写、上传、触发自动保存或勾选协议。
    - 报告未明确放行真实 Submit：必须停在任何最终提交动作之前。
    - `controlledFixtureFillEnabled`/`controlledFixtureSubmitEnabled` 只允许维护者用 `application-fake-*` 数据操作仓库固定的 loopback 表单，不允许把真实简历或真实岗位 URL 替换进去。`controlledFixtureRecordingReady` 不是 `true` 时只能运行维护者验收，不能把结果录制或发布为已通过演示。
    - 状态缺失、矛盾、过期或无法读取时，按未通过处理。
-5. 黄金路径 MVP 的公开承诺仅是用户逐步确认后的单岗位辅助投递。不进行无人值守、批量投递、批量私信或绕过平台限制。
-6. 面向新用户时每次只给一个明确动作或一个最小问题，等待回复后再继续；不要一次展示整份协议或要求用户填写长表。状态说明保持简短，并明确写出“现在请你做什么”。
+6. 黄金路径 MVP 的公开承诺仅是用户逐步确认后的单岗位辅助投递。不进行无人值守、批量投递、批量私信或绕过平台限制。
+7. 面向新用户时每次只给一个明确动作或一个最小问题，等待回复后再继续；不要一次展示整份协议或要求用户填写长表。状态说明保持简短，并明确写出“现在请你做什么”。
 
 ### 2. 安装和接通 ego(lite)
 
@@ -38,22 +39,33 @@
 3. 等用户明确回复“已完成 ego(lite) 引导”后再继续。未收到回复时不要循环探测或假设安装完成。若发现多个 ego(lite)/ego 主进程，要求用户亲自退出所有不在 `/Applications/AI product Builder/ego.app` 的副本并启动该固定路径；不要自动终止任何进程，也不要删除、移动或覆盖任何应用。
 4. Codex 任务可能在启动时缓存旧 skill 元数据。不要仅因缓存版本较旧就要求重开任务；先执行下一步的官方最新稳定版解析器。解析通过后，完整读取解析器报告的活动 runtime `SKILL.md` 并按其语法调用。只能读取解析器已经验证的 `/Applications` 活动 runtime，不能从 Desktop、下载目录或另一个 bundle 拼接身份。只有 onboarding 后 `ego-browser` 可执行文件仍不可用时，才让用户新建一个 Codex 任务并原样粘贴同一条 Prompt 以刷新宿主工具发现。
 5. 询问本次允许访问的招聘网站。请用户亲自在 ego(lite) 中完成这些站点的登录以及验证码/二次验证，然后暂停；只有用户明确回复“登录完成，可以继续”后才重新取得浏览器控制。若用户在任何时刻接管 task space，必须等待新的明确继续指令，不得自动夺回。
-6. 在首次调用 `ego-browser` 前运行 `./scripts/resolve-latest-ego-runtime.sh`。它必须从 Citro Labs 官方 GitHub Releases 的 `/latest` 重定向解析非预发布语义版本，读取官方资产 SHA-256，下载但不执行 `ego-browser-v<version>.zip`，然后执行完整、只读的运行时身份检查：
+6. 在首次浏览器调用前运行 `./scripts/resolve-latest-ego-runtime.sh`。它必须从 Citro Labs 官方 GitHub Releases 的 `/latest` 重定向解析非预发布语义版本，读取官方资产 SHA-256，下载但不执行 `ego-browser-v<version>.zip`，然后执行完整、只读的运行时身份检查：
    - 固定 `/Applications/AI product Builder/ego.app`，从 `Info.plist` 读取 bundle id、短版本、build 版本、KSProductID、KSVersion 和 KSUpdateURL；更新源必须仍是 Citro Labs 官方地址，活动 runtime 必须位于同一 bundle 且版本一致。
    - 使用 macOS 系统签名工具核对固定 Apple Team、完整 code-directory SHA-256、designated requirement、可执行文件 SHA-256、valid-on-disk 和 notarized Developer ID。不导出或展示签名证书。
-   - 只读枚举当前正在运行的 ego/ego(lite) 主进程。至少一个主进程的实际可执行路径必须与 `executablePath` 完全一致；若存在从 Desktop、下载目录或其他路径运行的主进程，要求用户亲自退出它并启动放行路径，随后重新检查。不要自动结束任何进程。
    - 官方 Release 资产中的 `SKILL.md` 与活动 runtime 内置文件的版本、日期和 SHA-256 必须逐字一致。当前任务显示的旧缓存只用于识别宿主可能陈旧，不再覆盖这个官方稳定版解析结果。
    任一字段未知、预发布、命令失败、只能部分匹配或来源跳转到其他仓库时停止所有网页任务，简短说明差异；仍可继续已放行的离线解析/起草。
-7. 解析器输出 `status: ready` 后，完整读取它给出的 runtime `SKILL.md`，按该语法执行一个最小 runtime 调用并输出可核对的 ready 结果。冒烟失败时按官方安装排障；冒烟成功不替代第 6 步的签名、Release 与内容校验。后续网页任务复用同一个目标明确的 task space。
+7. 解析器输出 `status: ready` 后，完整读取它给出的 runtime `SKILL.md`。所有浏览器命令都必须把原本的 `ego-browser ...` 替换为 `./scripts/run-verified-ego-browser.sh ...`；不得执行 `command -v ego-browser` 找到的路径、`~/.local/bin` 软链或 Desktop/下载目录中的 CLI。runner 会重新验证官方 runtime、只读枚举主进程、要求恰好一个进程来自固定 `/Applications` 路径，再执行 resolver 返回的绝对 CLI；发现重复或错误路径时让用户亲自退出，不自动结束进程或改写软链。
+8. 通过 runner 按活动 runtime skill 的语法执行一个最小调用并输出可核对的 ready 结果。冒烟失败时按官方安装排障；冒烟成功不替代第 6 步的签名、Release 与内容校验。后续网页任务继续通过 runner，并复用同一个目标明确的 task space。
 
 ### 3. 建立私有工作区并解析简历
 
 1. 在读取简历前用简短中文说明：哪些字段会进入当前 Codex 会话/模型上下文、已知的数据处理方/区域/留存信息及未知项。默认建议在当前用户的 Documents 目录创建 `FindMyDreamJob-private`，先解析成绝对路径并确认它不在任何版本控制目录内；用户只需回复“使用默认目录”，也可以另选位置。创建后使用 owner-only 权限，后续公开输出只称“私有目录”，不重复完整路径。
 2. 先让用户上传一份 PDF 或 DOCX 简历。仅使用当前 Codex 宿主已经提供且受信任的 PDF/DOCX 能力；本仓库不提供通用解析器。若该能力缺失或文件无法可靠读取，停止解析/导出并说明原因，不执行 fixture builder、不安装 lock 中的参考项目或任何未知依赖。
 3. 解析简历为候选人事实画像。每条事实保留来源证据；缺失、歧义或解析失败标记为“未知”，请用户确认，不得补写经历、技能、雇主、数字、证书或时间线。
-4. 在开始搜岗前必须单独完成一次求职意图确认。根据简历只生成一张简短的“建议意图卡”，明确标为待确认而不是既定事实，至少包含：目标岗位/关键词、目标行业或业务方向、偏好的职责或工作内容、不希望出现的岗位、目标城市或远程、校招全职/实习/明确专项计划、毕业届别。一次只请用户确认或修改这张卡，不要求填写长表；用户没有确认时保持离线状态，不访问招聘网站。
-5. 用户说“秋招”“春招”“校招”“应届岗位”时，招聘类型必须解释为对应届别的校招全职，不能映射为日常实习、暑期实习、留用实习、ByteIntern 或社招；只有用户明确说要实习时才搜索实习。其余经验/学历限制、薪资、公司偏好、结果数和时间预算默认记为“不限/未知”，只有实际筛选需要时再逐项询问。不得仅根据毕业届别自动扩展成实习或专项计划。
-6. 原始简历、联系方式、截图、材料和 ledger 只写入私有目录。日志和公开输出不记录简历正文、联系方式、登录信息或完整本地路径。
+4. 在开始搜岗前必须单独完成一次求职意图确认。根据简历只生成下面格式的建议，不把实习经历、学校、毕业年份或最近职位自动当成用户偏好：
+   - `建议意图卡（待确认）`
+   - `目标岗位/关键词：`
+   - `目标行业或业务方向：`
+   - `偏好的职责/工作内容：`
+   - `明确排除的岗位/内容：`
+   - `城市/远程：`
+   - `招聘类型：校招全职 / 实习 / 明确专项计划 / 社招备选（一次只确认一个主路线）`
+   - `毕业届别：`
+   - `仍需确认：`
+   最后一行只问：`请回复“确认意图”，或直接修改其中一项。` 用户没有明确确认时将意图状态保留为 `proposed`/`needs_user_input`，保持离线，不访问招聘网站。“继续”“都可以”“你看着办”或只确认简历事实不能变成 `confirmed`。
+5. 用户说“秋招”“春招”“校招”“应届岗位”时，招聘类型必须解释为对应届别的校招全职，不能映射为日常实习、暑期实习、留用实习、ByteIntern 或社招；只有用户明确说要实习时才搜索实习。校招与实习、多个届别或彼此冲突的岗位方向同时出现时，先让用户选一个本轮主路线，不能合并成宽泛搜索。其余经验/学历限制、薪资、公司偏好、结果数和时间预算默认记为“不限/未知”，只有实际筛选需要时再逐项询问。不得仅根据毕业届别自动扩展成实习或专项计划。
+6. 确认后记录意图卡的规范化摘要和确认时间。任何目标岗位、关键词、招聘类型、毕业届别、城市硬约束或明确排除项发生变化，都把 `confirmedByUser` 重置为 `false`，显示新卡并重新确认；不得拿旧确认授权扩大搜索。
+7. 原始简历、联系方式、截图、材料和 ledger 只写入私有目录。日志和公开输出不记录简历正文、联系方式、登录信息或完整本地路径。
 
 ### 4. Discover：搜索并让用户选一个岗位
 

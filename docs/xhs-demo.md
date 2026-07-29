@@ -1,6 +1,6 @@
 # XHS demo script
 
-Current target: a 60-75 second public-Beta demo using synthetic data. Show one reviewed real-site Discover slice and local Draft, then switch visibly to the controlled loopback form for the two-confirmation Fill/Submit/ledger ending. Never enter a real application form or imply that controlled submission is a real employer application.
+Current target: a 60-75 second public-Beta demo using synthetic data. Lead with the semantic failure candidates hate—campus intent contaminated by internships—then show the confirmed intent card, official recruitment-channel entry and evidence table. Use a reviewed real-site slice only when it exactly matches the acceptance report. Switch visibly to the controlled loopback form for the confirmation/ledger ending. Never enter a real application form or imply that controlled submission is a real employer application.
 
 ## Synthetic candidate
 
@@ -18,14 +18,15 @@ Build or use only the tracked Rowan synthetic fixture and its generated document
 
 | Time | Screen | Voiceover / caption |
 | --- | --- | --- |
-| 0-5s | Open Codex and paste the short fixed-commit XHS prompt | “我只复制一段话，让 Codex 自己加载求职流程。” |
-| 5-12s | Show the fixed GitHub commit check and ego-browser version check | “它会先核对固定版本和浏览器能力，不会直接安装陌生脚本。” |
-| 12-20s | Select the synthetic resume and the private output folder | “这里用假简历；解析内容会进入 Codex，会话外文件留在本地私有目录。” |
-| 20-31s | Show a read-only ByteDance daily-internship search and one verified detail | “它按已验收的范围找真实岗位，岗位失效或范围不符就停。” |
-| 31-41s | Show the deduplicated job table, select one job, and show the evidence-based match result | “我先选一个岗位；它会标出硬条件、证据和未知项，而不是只数关键词。” |
-| 41-51s | Show a before/after resume diff, material hash and explicit draft approval | “改写只能用已有事实；我确认这个版本后，才会进入下一步。” |
-| 51-64s | Put persistent `以下不是字节投递`, `受控投递演示 / 非真实雇主`, and `确认短语由测试脚本模拟` labels on screen; show the Rowan fake form, simulated exact Fill authorization, and stop before submit | “现在切到假网站。为了演示状态机，确认短语由测试脚本模拟；真实使用必须由用户单独确认。” |
-| 64-75s | Keep all controlled-demo labels visible; show the simulated Submit phrase, one controlled click, receipt, and local ledger status | “真实提交还要再确认一次，只点一次，结果和异常都会留在本地。” |
+| 0-3s | Show `目标：2027 校招全职` beside an internship result and add a large red cross | “AI 找得快，不等于找得对。秋招最怕它把实习塞进来。” |
+| 3-8s | Paste the short fixed-commit XHS prompt | “我只复制一段话，让 Codex 自己加载开源求职流程。” |
+| 8-14s | Show the fixed commit, official runtime and verified-runner ready lines | “它先锁定版本和正式 ego，不会跟着旧 CLI 跑。” |
+| 14-23s | Select the synthetic resume and show the proposed intent card | “读完简历也不直接搜；岗位、行业、城市、校招还是实习，先让我确认。” |
+| 23-33s | Confirm one primary route, then show a company recruiting home and the visible `校园招聘`/matching channel entry | “确认后才联网，而且必须从官网对应招聘通道进去。” |
+| 33-44s | Show a safe zero result for a cohort-mismatched campus target, or an acceptance-allowed result table with number, company, role, location, judgment and original link | “没有就是没有。它不会拿日常实习冒充校招；有结果也一定给原链接。” |
+| 44-54s | When an eligible reviewed demo posting exists, show one evidence-based match and truthful material diff; otherwise show the explicit safe-stop card | “匹配看硬条件和证据，不是只数关键词；改材料也不能编经历。” |
+| 54-66s | Put persistent `受控投递演示 / 非真实雇主` and `确认短语由测试脚本模拟` labels on screen; show the Fixture Labs fake form and simulated Fill authorization | “后面切到本地假网站，只演示填写前确认和状态记录，不是公司投递。” |
+| 66-75s | Keep controlled-demo labels visible; show one simulated fixture click, receipt, ledger, then the GitHub end card | “真实提交现在没开放。项目开源，Prompt 和边界都在 GitHub。” |
 
 ## Recording checks
 
@@ -40,6 +41,9 @@ Build or use only the tracked Rowan synthetic fixture and its generated document
 - The controlled form may use only the fixed loopback fixture and `application-fake-*` data. Never substitute a real resume, phone, email, job URL or employer name.
 - The controlled route keeps the same synthetic Rowan identity but deliberately switches to a separate fake attachment and fictional Fixture Labs job. Keep that target and attachment discontinuity visible.
 - Show the fixed commit URL long enough to establish that the prompt is reproducible.
+- Show `建议意图卡（待确认）` before any real-site frame, and show the user's explicit intent confirmation before the channel entry.
+- For a campus target, show the visible campus entry and channel evidence. Never edit a default/social search page to look like a campus search.
+- Every visible shortlist row must include company and original link; crop or blur tracking parameters only if the canonical destination remains clear.
 - End on `受控演示成功 / 真实投递未开放`, not on an unqualified “投递成功” claim.
 
 ## Publication gate

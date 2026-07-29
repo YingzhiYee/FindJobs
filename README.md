@@ -4,7 +4,7 @@
 
 **你只需要做四件事：**复制 Prompt、完成 ego(lite) 图形界面引导、上传简历、在关键节点确认。Codex 每次只问一个问题。
 
-- [从 `v0.4.0-beta.1` Release 获取一键 Prompt](https://github.com/YingzhiYee/FindJobs/releases/tag/v0.4.0-beta.1)
+- [从 `v0.4.0-beta.2` Release 获取一键 Prompt](https://github.com/YingzhiYee/FindJobs/releases/tag/v0.4.0-beta.2)
 - [查看 60–75 秒演示脚本](docs/xhs-demo.md)
 - [查看当前真实能力与未开放边界](tests/acceptance-report.md)
 
@@ -12,7 +12,7 @@
 
 这是一个面向 Codex + ego(lite) 的求职流程启动包。它把简历理解、岗位发现、匹配分析、材料准备和投递状态设计串成一条可暂停、可复核的流程。目标黄金路径是在用户逐步确认后辅助完成**一个岗位**：安装与登录交接、简历解析、搜岗、岗位选择、材料定制、填写前确认、提交前再次确认和本地记录；不做无人值守或批量投递。当前候选版实际开放范围以下一段为准。
 
-当前候选版本是 `0.4.0-beta.1`。它已放行在宿主具备可信文档能力时进行本地 PDF/DOCX 简历解析和材料定制、字节日常实习与腾讯校招全职的窄范围真实搜岗，以及维护者使用假数据受控表单进行的双确认填写/提交演示。真实招聘网站的 Fill/Submit 仍关闭；仓库中出现实现文件不等于验收通过。
+当前候选版本是 `0.4.0-beta.2`。它已放行在宿主具备可信文档能力时进行本地 PDF/DOCX 简历解析和材料定制、字节日常实习与腾讯校招全职的窄范围真实搜岗，以及维护者使用假数据受控表单进行的双确认填写/提交演示。真实招聘网站的 Fill/Submit 仍关闭；仓库中出现实现文件不等于验收通过。
 
 本仓库只负责流程编排和使用说明，不打包 ego(lite) 桌面应用，也不在默认情况下自动安装第三方脚本。第三方 skill 会先经过来源、许可证和行为检查；只有在你明确同意后，才考虑安装其必要依赖。
 
@@ -20,14 +20,14 @@
 
 ## 最简单的用法
 
-1. 打开 GitHub Releases 中对应固定版本的发布说明，把其中的一段短提示词复制给 Codex。它必须包含完整的 40 位 commit 地址。
+1. 打开 GitHub Releases 中对应固定版本的发布说明，把其中的一段短提示词复制给 Codex。它必须包含完整的 40 位 commit 地址；不要求你预先下载本仓库，Codex 会在临时目录只获取并核对这个固定对象。
 2. Codex 会先读取该固定版本的入口和验收状态；如果没有 ego(lite)，它只会引导你从[官方快速开始页面](https://lite.ego.app/document/zh/docs/quick-start)安装。
 3. 按提示在 ego(lite) 的图形界面中完成首次引导、按需导入 Chrome 数据，并亲自登录你允许访问的招聘网站。完成后明确回复 Codex，Codex 才会验证浏览器连接并继续。
 4. 上传最新简历（PDF 或 DOCX），确认求职偏好，依次完成已放行范围内的搜岗、单岗位选择、材料定制和确认。当前 Beta 会在真实招聘网站填写前停下；只有验收报告中的 `controlledFixtureRecordingReady` 为 `true` 时，录屏才可用仓库受控表单演示两次模拟确认、单次提交和本地记录。
 
 Codex 每次只会让用户做一个动作。私有产物默认建议放到用户 Documents 目录下的 `FindMyDreamJob-private`。简历解析后，Codex 会先给出一张待确认的求职意图卡，包含目标岗位、行业/业务方向、偏好与排除的工作内容、城市/远程、招聘类型和毕业届别；用户确认或修改后才开始搜岗，其他条件确实需要时再补充。秋招/春招默认只进入对应届别的校招全职主列表，实习岗位不会混入。
 
-首次安装或升级 ego(lite) 后，Codex 当前任务可能仍显示启动时看到的旧 skill 元数据。仓库不再把这个缓存本身当作版本锁：先运行 `scripts/resolve-latest-ego-runtime.sh`，从 Citro Labs 官方 GitHub Release 解析最新稳定 skill，并与 `/Applications/AI product Builder/ego.app` 内经过 Apple 签名和公证验证的 skill 逐字比对；通过后完整读取该活动 runtime 的 `SKILL.md` 作为本次调用契约。不要混用 Desktop/下载目录副本，也不要让 Codex 自动删除或结束任何应用。若 onboarding 后仍没有可调用的 `ego-browser` 可执行文件，再新建一个 Codex 任务作为宿主刷新兜底。
+首次安装或升级 ego(lite) 后，Codex 当前任务可能仍显示旧 skill 元数据，`~/.local/bin/ego-browser` 也可能仍指向旧 onboarding runtime。仓库不再信任这个缓存或 PATH 软链：先运行 `scripts/resolve-latest-ego-runtime.sh`，从 Citro Labs 官方 GitHub Release 解析最新稳定 skill，并与 `/Applications/AI product Builder/ego.app` 内经过 Apple 签名和公证验证的 skill 逐字比对；通过后完整读取该活动 runtime 的 `SKILL.md`，并只通过 `scripts/run-verified-ego-browser.sh` 调用 resolver 返回的官方 CLI。runner 不重写用户软链，不混用 Desktop/下载目录副本，也不自动删除或结束应用；发现重复进程时会停下让用户亲自处理。
 
 > XHS 只投放 GitHub Release 说明中的成品提示词。仓库内无法把“包含自身的 commit hash”写进同一个 commit，因此 [`START_PROMPT.md`](START_PROMPT.md) 只保留占位模板。维护者必须先提交，再把得到的 hash 填入 Release 和 XHS 文案。不要使用会漂移的 main/master/HEAD、分支或可移动 tag 链接。
 
@@ -52,7 +52,7 @@ Codex 每次只会让用户做一个动作。私有产物默认建议放到用�
 
 ego(lite) 是外部桌面依赖。若未安装，Codex 只应引导你打开官方安装页面并等待你完成安装，不应下载来路不明的二进制或修改浏览器登录资料。
 
-浏览器兼容性使用 `config/skills.lock.yaml` 中的“官方最新稳定版”解析策略，而不是手工维护的单版本白名单。每次首次网页调用和维护者黄金测试都会运行 `scripts/resolve-latest-ego-runtime.sh`：只接受 Citro Labs GitHub 的最新稳定 Release，核对 GitHub 资产 SHA-256，并要求 `/Applications/AI product Builder/ego.app` 的固定路径、bundle id、Apple Team、designated requirement、Gatekeeper 公证、bundle 当前 runtime 路径以及内置 `SKILL.md` 与 Release 完全一致。任一来源未知、预发布、部分匹配或校验失败都停止网页工作；宿主文档能力仍可信时可继续离线解析和起草。验收报告继续记录实际测试过的精确元组，但不再用它阻止已通过上述检查的官方稳定更新。
+浏览器兼容性使用 `config/skills.lock.yaml` 中的“官方最新稳定版”解析策略，而不是手工维护的单版本白名单。每次首次网页调用和维护者黄金测试都会运行 `scripts/resolve-latest-ego-runtime.sh`：只接受 Citro Labs GitHub 的最新稳定 Release，核对 GitHub 资产 SHA-256，并要求 `/Applications/AI product Builder/ego.app` 的固定路径、bundle id、Apple Team、designated requirement、Gatekeeper 公证、bundle 当前 runtime 路径以及内置 `SKILL.md` 与 Release 完全一致。普通流程随后通过 `scripts/run-verified-ego-browser.sh` 启动该绝对路径，并在启动前要求系统只运行这一个正式主进程；shell 中同名旧命令不会被执行。任一来源未知、预发布、部分匹配或校验失败都停止网页工作；宿主文档能力仍可信时可继续离线解析和起草。验收报告继续记录实际测试过的精确元组，但不再用它阻止已通过上述检查的官方稳定更新。
 
 ## 四种模式
 
@@ -74,13 +74,13 @@ ego(lite) 是外部桌面依赖。若未安装，Codex 只应引导你打开官�
 
 ## 如何加载本仓库流程
 
-首版采用固定 commit 的 GitHub 启动包：Release 说明中的短提示词先让 Codex 读取同一 commit 的 `START_PROMPT.md`，再只读加载 `skills/find-my-dream-job/SKILL.md`、`skills/resume-evidence-profile/SKILL.md`、`skills/evidence-job-match/SKILL.md` 和 `skills/truthful-application-materials/SKILL.md`。用户不需要手动运行仓库中的安装命令；读取仓库也不代表授权安装依赖或执行脚本。不得因为找不到某个依赖文件就自行猜测或执行未知代码。
+首版采用固定 commit 的 GitHub 启动包：Release 说明中的短提示词先让 Codex 在 owner-only 临时目录获取并 detached checkout 同一 commit，核对官方 remote 与完整 HEAD，再读取 `START_PROMPT.md` 和四个 bundled skill。用户不需要预装仓库或手动运行命令；该 Prompt 只放行 runtime resolver 与 verified runner，其他仓库脚本、依赖和第三方候选仍不得执行。不得因为找不到某个依赖文件就自行猜测或运行未知代码。
 
 高级用户希望长期复用时，可以明确要求 Codex 使用内置 `skill-installer` 从固定的 GitHub commit 安装本仓库四个 skill。安装前仍要查看 `config/skills.lock.yaml` 和 `policies/`；不要把第三方依赖和安装脚本当成可信代码。
 
-`0.4.0-beta.1` 不发布 marketplace 安装入口。首版 XHS 演示只走固定版本的 GitHub 提示词；所有能力是否可用始终以该固定 commit 内 `tests/acceptance-report.md` 的机器可读状态块为准。
+`0.4.0-beta.2` 不发布 marketplace 安装入口。首版 XHS 演示只走固定版本的 GitHub 提示词；所有能力是否可用始终以该固定 commit 内 `tests/acceptance-report.md` 的机器可读状态块为准。
 
-录屏前按 [`docs/xhs-demo.md`](docs/xhs-demo.md) 使用虚构简历和假联系方式；当前 G3 站点实测结论记录在 [`tests/acceptance-report.md`](tests/acceptance-report.md)。
+录屏前按 [`docs/xhs-demo.md`](docs/xhs-demo.md) 使用虚构简历和假联系方式；当前 G3 站点实测结论记录在 [`tests/acceptance-report.md`](tests/acceptance-report.md)，旧 CLI/PATH 劫持对抗结果记录在 [`tests/runtime-activation-report.md`](tests/runtime-activation-report.md)。
 
 第三方 skill 只作为受控依赖。Codex 应先记录其 GitHub 地址、固定版本或 commit、许可证、所需权限和联网行为，展示审查结果并征得同意。默认不执行第三方仓库中的安装脚本、二进制、MCP 或会上传简历的程序。
 

@@ -31,10 +31,11 @@ trap cleanup EXIT
 case "$#" in
   0) ;;
   1)
-    if [ "$1" != "--tsv" ]; then
-      fail "the only supported option is --tsv"
-    fi
-    OUTPUT_MODE="tsv"
+    case "$1" in
+      --tsv) OUTPUT_MODE="tsv" ;;
+      --ego-browser-executable) OUTPUT_MODE="ego-browser-executable" ;;
+      *) fail "supported options are --tsv and --ego-browser-executable" ;;
+    esac
     ;;
   *) fail "unexpected arguments" ;;
 esac
@@ -200,6 +201,8 @@ if [ "$OUTPUT_MODE" = "tsv" ]; then
     "$RUNTIME_SKILL_SHA256" \
     "$RUNTIME_ASSET_SHA256" \
     "$RUNTIME_RELEASE_TAG"
+elif [ "$OUTPUT_MODE" = "ego-browser-executable" ]; then
+  printf '%s\n' "$RUNTIME_EGO_BROWSER"
 else
   printf '%s\n' \
     'status: ready' \

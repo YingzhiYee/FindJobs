@@ -6,7 +6,7 @@ This playbook turns the verified product path into a measurable XHS → GitHub f
 
 Use one promise consistently:
 
-> 复制一段话给 Codex，让它引导安装 ego(lite)、读简历、找真实岗位、做匹配并生成定制材料；真实投递未开放，最后用假网站演示双确认和本地记录。
+> 复制一段话给 Codex：先读简历并让你确认求职意图，再用 ego(lite) 从公司官网进入匹配的校招/实习通道，返回公司、岗位、地点、判断和原始链接；你选中后再做材料。它宁可返回零结果，也不把实习冒充秋招。真实投递未开放，视频结尾只用假网站演示确认和记录机制。
 
 Do not use “全自动海投”“一键投递字节/Boss/腾讯” or any wording that collapses the real read-only route and the controlled submission route into one application.
 
@@ -16,7 +16,7 @@ The controllable funnel is:
 
 `XHS impressions → 3-second hold → saves/comments → copied prompt → successful Draft → GitHub visit → Star`
 
-The repository starts from zero Stars. A planning assumption of 5% GitHub-visitor-to-Star conversion means 1,000 Stars needs roughly 20,000 qualified unique GitHub visitors. Treat 100,000 likes+saves as a stretch outcome, not a forecast. Optimize the leading indicators daily:
+The stretch goals are 100,000 XHS likes and 1,000 GitHub Stars; neither is guaranteed. At a planning like rate of 5%, 100,000 likes requires about 2,000,000 qualified views. At a planning GitHub-visitor-to-Star conversion of 5%, 1,000 Stars requires about 20,000 qualified unique GitHub visitors. If 2% of XHS viewers reach GitHub, that Star goal also needs roughly 1,000,000 qualified views. These are funnel assumptions, not forecasts. Optimize the leading indicators daily:
 
 | Stage | Primary metric | Initial target |
 | --- | --- | --- |
@@ -24,7 +24,8 @@ The repository starts from zero Stars. A planning assumption of 5% GitHub-visito
 | Proof | 50% video completion | ≥ 35% |
 | Utility | save rate | ≥ 8% |
 | Intent | comments asking for Prompt / profile visits | ≥ 2% of views |
-| Activation | users reaching one real-job Draft | ≥ 30% of Prompt starters |
+| Activation | users confirming intent and reaching one valid result/zero-result explanation | ≥ 40% of Prompt starters |
+| Value | users reaching one real-job Draft | ≥ 25% of Prompt starters |
 | GitHub | unique visitors → Star | ≥ 5% |
 
 Change only one variable per iteration. Do not infer causality from a tiny sample.
@@ -33,9 +34,9 @@ Change only one variable per iteration. Do not infer causality from a tiny sampl
 
 Publish the strongest truthful version first:
 
-1. `我只复制了一句话，Codex 就开始帮我找秋招岗位了`
-2. `把简历丢给 Codex 后，它真的去官网找岗位了`
-3. `给秋招人做了个“傻瓜式”AI 找工作流程（开源）`
+1. `AI 别再给 2027 秋招推实习了，我把找岗流程开源了`
+2. `我把秋招做成了一条 Prompt：先问清意图，再去官网找`
+3. `一条 Prompt，串起简历→校招官网→岗位原链接（开源）`
 
 Avoid putting “自动投递” in the title while real Fill/Submit are disabled. The controlled submission reveal belongs later in the video with persistent labels.
 
@@ -44,44 +45,49 @@ Avoid putting “自动投递” in the title while real Fill/Submit are disable
 Cover text:
 
 ```text
-复制 1 句话
-让 Codex 帮你找工作
-开源 / 可复现
+2027 秋招 ≠ 实习
+1 条 Prompt 先问清意图
+再进官网校招通道
 ```
 
-Open on the finished outcome, not installation. In the first three seconds show the short Prompt being pasted, then cut immediately to a real-job result table. Explain installation only after proof appears.
+Open on the failure users already hate: `目标：2027 校招` beside an internship recommendation with a large red cross. Cut to the intent card and the official `校园招聘` entry within three seconds. Explain installation only after proof appears.
 
 ## 60–75 second structure
 
 Use `docs/xhs-demo.md` as the safety authority. For retention, edit the same evidence into this narrative order:
 
-1. `0–3s` — paste one short Prompt; overlay `开源 / 固定 commit / 链接见置顶`.
-2. `3–10s` — use a clearly labeled outcome teaser of the real ByteDance read-only result and evidence table; the actual run still performs the commit/runtime checks first.
-3. `10–18s` — show resume upload and the one-question-at-a-time interaction.
-4. `18–32s` — show job selection, match evidence and hard gaps.
-5. `32–45s` — show before/after material diff and truthful-claim check.
-6. `45–60s` — visibly switch to Fixture Labs with all controlled-demo labels.
-7. `60–70s` — show simulated confirmation phrases, one fixture click, receipt and local ledger.
-8. `70–75s` — end card: `受控演示成功 / 真实投递未开放` and `GitHub: YingzhiYee/FindJobs`.
+1. `0–3s` — red-cross an internship result under `目标：2027 校招`; caption `AI 找得快，不等于找得对`.
+2. `3–8s` — paste the fixed-commit Prompt; overlay `开源 / 可复现 / 链接见置顶`.
+3. `8–18s` — show synthetic resume parsing and the proposed intent card; user confirms `2027 校招全职`.
+4. `18–30s` — show the company recruiting home, visible `校园招聘` entry and verified channel URL/page label.
+5. `30–42s` — show either a correctly labeled zero result or an allowed result table with selection number, company, role, location, judgment and clickable original link; never substitute an internship for a campus target.
+6. `42–54s` — select one eligible demo job when available, show match evidence/hard gaps and a truthful before/after material diff. If no eligible job exists, show the safe stop instead of fabricating this segment.
+7. `54–69s` — visibly switch to Fixture Labs with persistent `受控投递演示 / 非真实雇主` and simulated-confirmation labels; show the local mechanism only.
+8. `69–75s` — end card: `真实网站：发现/材料｜投递：受控演示` and `GitHub: YingzhiYee/FindJobs`.
 
 Keep cuts fast, captions large and terminal output cropped to only the proof line. Never show account identity, notifications, absolute local paths, email, phone, Cookie, token, QR code or OTP.
 
 ## Post copy
 
 ```text
-秋招最折磨我的不是改一版简历，而是：找岗位、看 JD、判断匹配、再改一版、还要记自己投过什么。
+2027 秋招最怕的不是 AI 找得慢，而是它把“校招、实习、社招”混成一锅，然后一本正经地告诉你很匹配。
 
-所以我把这条流程做成了一个开源启动包。你只要把置顶的一段话复制给 Codex，它会一步步带你：
-① 安装并接通 ego(lite)
-② 解析简历，只保留有证据的事实
-③ 去已验收的官网范围找真实岗位
-④ 让你选一个岗位，再生成定制材料
-⑤ 在任何填写/提交前停下来等你确认
+所以我把自己的求职流程做成了一个开源 Prompt。复制给 Codex 后，它不会立刻乱搜，而是一步步：
+① 只从 ego(lite) 官网引导安装并核对正式 runtime
+② 解析简历，但先把推断写成“待确认的求职意图卡”
+③ 让你确认岗位、行业、城市、招聘类型和毕业届别
+④ 从公司招聘首页进入可见的“校园招聘/应届生招聘”通道
+⑤ 返回公司、岗位、地点、匹配判断和可以自己点开的原始链接
+⑥ 你选中一个岗位后，再按真实经历改材料
 
-视频最后的投递是本地假网站受控演示，不是真实公司投递；当前公开 Beta 的真实网站能力停在材料定制。这样不够“全自动”，但至少不会替你乱填、重复投或编经历。
+最重要的是：如果 2027 校招没开放，它就告诉你没有，不会拿日常实习来凑数。
 
-项目完全开源，GitHub 搜：YingzhiYee/FindJobs
-如果你跑到哪一步卡住了，把步骤和报错留在评论区，我会继续把新手路径磨平。
+视频结尾的填写/提交是 Fixture Labs 本地假网站受控演示，不是真实公司投递。当前公开版真实网站仍停在发现和材料阶段；这不够“全自动”，但至少不会替你乱填、重复投或编经历。
+
+项目完全开源：GitHub 搜 `YingzhiYee/FindJobs`。
+建议先收藏这篇，等你准备投递时直接复制置顶 Prompt。如果这个“宁可停，也不乱投”的边界对你有用，可以自愿点一个 Star；不点也不影响任何功能。
+
+跑到哪一步卡住了，只发步骤和脱敏报错，别把简历、手机号、Cookie、Token 或验证码贴在评论区。
 ```
 
 ## Pinned comment
@@ -96,7 +102,7 @@ If XHS suppresses a comment containing a URL, put the repository name in the pin
 
 ## Comment replies
 
-- Installation: `先确认是 macOS，并从 ego(lite) 官方快速开始页面安装。安装后新开一个 Codex 任务，再复制同一段 Prompt。`
+- Installation: `先确认是 macOS，并只从 ego(lite) 官方快速开始页面安装。完成 onboarding 后回复“已完成”；流程会自己核对正式 /Applications runtime，不会信任旧 PATH 软链。`
 - Unsupported job site: `这个 Beta 只开放验收报告里列出的精确范围；Boss/猎聘等还没有放行，我不会假装已经支持。`
 - Real submission: `当前真实网站停在材料定制；视频提交段是明确标注的假网站演示。真实投递要等后续站点级验收。`
 - Bug report: `请只发步骤和脱敏后的报错，不要发简历、手机号、Cookie、Token 或验证码。`
