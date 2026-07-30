@@ -4,7 +4,7 @@
 
 **你只需要做四件事：**复制 Prompt、完成 ego(lite) 图形界面引导、上传简历、在关键节点确认。Codex 每次只问一个问题。
 
-- [从 `v0.4.0-beta.2` Release 获取一键 Prompt](https://github.com/YingzhiYee/FindJobs/releases/tag/v0.4.0-beta.2)
+- [查看 `v0.4.0-beta.2` 固定版本与验收记录](https://github.com/YingzhiYee/FindJobs/releases/tag/v0.4.0-beta.2)
 - [查看 60–75 秒演示脚本](docs/xhs-demo.md)
 - [查看当前真实能力与未开放边界](tests/acceptance-report.md)
 
